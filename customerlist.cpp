@@ -15,5 +15,6 @@ CustomerList::~CustomerList()
 
 void CustomerList::on_buttonBack_clicked()
 {
-
+    this->close();
+    emit showPrev();
 }

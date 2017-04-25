@@ -15,6 +15,9 @@ public:
     explicit CustomerDetails(QWidget *parent = 0);
     ~CustomerDetails();
 
+signals:
+    void showPrev();
+
 private:
     Ui::CustomerDetails *ui;
 };

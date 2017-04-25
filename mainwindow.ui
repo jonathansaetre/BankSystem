@@ -48,7 +48,7 @@
      <string>Extreme banking</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="buttonTransactions">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -62,7 +62,7 @@
     </property>
    </widget>
    <zorder>label</zorder>
-   <zorder>pushButton</zorder>
+   <zorder>buttonTransactions</zorder>
    <zorder>buttonCustomers</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -71,7 +71,7 @@
      <x>0</x>
      <y>0</y>
      <width>564</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

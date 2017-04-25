@@ -17,6 +17,7 @@ public:
 
 private slots:
     void on_buttonCustomers_clicked();
+    void on_buttonTransactions_clicked();
 
 private:
     Ui::MainWindow *ui;

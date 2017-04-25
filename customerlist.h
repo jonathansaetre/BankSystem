@@ -18,6 +18,9 @@ public:
 private slots:
     void on_buttonBack_clicked();
 
+signals:
+    void showPrev();
+
 private:
     Ui::CustomerList *ui;
 };
