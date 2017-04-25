@@ -16,6 +16,7 @@ TransactionList::~TransactionList()
 
 void TransactionList::on_buttonNewTransaction_clicked()
 {
+    hide();
     TransactionDetails *transDet = new TransactionDetails();
     QObject::connect(transDet, SIGNAL(showPrev()), SLOT(show()));
     transDet->show();

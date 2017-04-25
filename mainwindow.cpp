@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "customerlist.h"
-#include "Transactionlist.h"
+#include "transactionlist.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
