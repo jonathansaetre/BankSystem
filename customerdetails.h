@@ -18,6 +18,9 @@ public:
 signals:
     void showPrev();
 
+private slots:
+    void on_CloseButton_clicked();
+
 private:
     Ui::CustomerDetails *ui;
 };

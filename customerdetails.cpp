@@ -12,3 +12,9 @@ CustomerDetails::~CustomerDetails()
 {
     delete ui;
 }
+
+void CustomerDetails::on_CloseButton_clicked()
+{
+    close();
+    emit showPrev();
+}
