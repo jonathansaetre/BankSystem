@@ -1,0 +1,22 @@
+#ifndef ACCOUNTCREATE_H
+#define ACCOUNTCREATE_H
+
+#include <QDialog>
+
+namespace Ui {
+class accountcreate;
+}
+
+class accountcreate : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit accountcreate(QWidget *parent = 0);
+    ~accountcreate();
+
+private:
+    Ui::accountcreate *ui;
+};
+
+#endif // ACCOUNTCREATE_H
