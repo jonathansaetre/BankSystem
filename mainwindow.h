@@ -19,6 +19,12 @@ private slots:
     void on_buttonCustomers_clicked();
     void on_buttonTransactions_clicked();
 
+    void on_actionNew_triggered();
+
+    void on_actionDelete_triggered();
+
+    void on_actionNew_2_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

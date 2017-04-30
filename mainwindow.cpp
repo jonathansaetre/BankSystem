@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include "customerlist.h"
 #include "transactionlist.h"
+#include "customerdetails.h"
+#include "deletecustomer.h"
+#include "accountcreate.h"
 #include <dbmanager.h>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -41,3 +44,27 @@ void MainWindow::on_buttonTransactions_clicked()
 //    db->addCustomer(p);
 }
 
+
+void MainWindow::on_actionNew_triggered()
+{
+    hide();
+    CustomerDetails *customerDet = new CustomerDetails();
+    QObject::connect(customerDet, SIGNAL(showPrev()), SLOT(show()));
+    customerDet->show();
+}
+
+void MainWindow::on_actionDelete_triggered()
+{
+    hide();
+    Deletecustomer *customerDelete = new Deletecustomer();
+    QObject::connect(customerDelete, SIGNAL(showPrev()), SLOT(show()));
+    customerDelete->show();
+}
+
+void MainWindow::on_actionNew_2_triggered()
+{
+    hide();
+   accountcreate *createaccount = new accountcreate();
+    QObject::connect(createaccount, SIGNAL(showPrev()), SLOT(show()));
+    createaccount->show();
+}
