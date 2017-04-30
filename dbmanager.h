@@ -9,8 +9,11 @@ class DbManager {
 public:
     DbManager();
     bool addCustomer(Customer c);
+    bool updateCustomer(Customer c);
+    bool deleteCustomer(Customer c);
 private:
     QSqlDatabase db;
+    bool existsQuery(QString q, QString id);
 };
 
 #endif // DBMANAGER_H

@@ -2,14 +2,20 @@
 
 
 struct Customer {
+    QString id;
     QString name;
     QString ssn;
     QString address;
     QString phone;
     QString email;
-    QString id;
 };
 
-struct Transaction {
-
+struct Account {
+    QString id;
+    QString customerID;
+    QString name;
+    QString balance;
+    QString address;
+    QString phone;
+    QString email;
 };
