@@ -1,7 +1,7 @@
 #ifndef CUSTOMERLIST_H
 #define CUSTOMERLIST_H
 #include <QWidget>
-#include <QSqlDatabase>
+
 namespace Ui {
 class CustomerList;
 }
@@ -9,15 +9,7 @@ class CustomerList;
 class CustomerList : public QWidget
 {
     Q_OBJECT
-public:
-    void openDB(){
-        BankSyst= QSqlDatabase::addDatabase("QSQLITE");
-         BankSyst.setDatabaseName("BankingSystem.sqlite");
 
-    }
-    void closeDB(){
-        BankSyst.close();
-    }
 
 public:
     explicit CustomerList(QWidget *parent = 0);
@@ -35,7 +27,7 @@ signals:
 
 private:
     Ui::CustomerList *ui;
-QSqlDatabase BankSyst;
+
 };
 
 #endif // CUSTOMERLIST_H
