@@ -3,6 +3,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QCoreApplication>
+#include <QSqlRecord>
 
 DbManager::DbManager() {
     db = QSqlDatabase::addDatabase("QSQLITE");
@@ -26,8 +27,8 @@ bool DbManager::addCustomer(const Customer c) {
 
 bool DbManager::updateCustomer(const Customer c) {
     QSqlQuery query(db);
-    if(!existsQuery("select * from Customer where id=:id", c.id)) return false;
-    query.prepare("UPDATE Customer set name=:name, ssn=:ssn, phone=:phone, address=:address, email=:email where id=:id");
+    if(!existsQuery("SELECT * FROM Customer WHERE id=:id", c.id)) return false;
+    query.prepare("UPDATE Customer SET name=:name, ssn=:ssn, phone=:phone, address=:address, email=:email WHERE id=:id");
     query.bindValue(":id", c.id);
     query.bindValue(":name", c.name);
     query.bindValue(":ssn", c.ssn);
@@ -42,13 +43,34 @@ bool DbManager::updateCustomer(const Customer c) {
 
 bool DbManager::deleteCustomer(const Customer c) {
     QSqlQuery query(db);
-    if(!existsQuery("select * from Customer where id=:id", c.id)) return false;
+    if(!existsQuery("SELECT * FROM Customer where id=:id", c.id)) return false;
     query.prepare("DELETE from Customer where id=:id");
     query.bindValue(":id", c.id);
     if(query.exec()) return true;
     qDebug() << "deleteCustomer error: " << query.lastError();
     qDebug() << query.executedQuery();
     return false;
+}
+
+Customer DbManager::fetchCustomer(const Customer c) {
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM Customer WHERE id=:id");
+    query.bindValue(":id", c.id);
+    Customer getC;
+    if(query.exec()) {
+        if(!query.next() && !query.isSelect() && !query.first()) return getC;
+        QSqlRecord record = query.record();
+        getC.id = record.value("id").toString();
+        getC.name = record.value("name").toString();
+        getC.ssn = query.value("ssn").toString();
+        getC.phone = query.value("phone").toString();
+        getC.address = query.value("address").toString();
+        getC.email = query.value("email").toString();
+    } else {
+        qDebug() << "fetchCustomer error: " << query.lastError();
+        qDebug() << query.executedQuery();
+    }
+    return getC;
 }
 
 bool DbManager::existsQuery(const QString q, QString id) {

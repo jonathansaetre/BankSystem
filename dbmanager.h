@@ -11,6 +11,7 @@ public:
     bool addCustomer(Customer c);
     bool updateCustomer(Customer c);
     bool deleteCustomer(Customer c);
+    Customer fetchCustomer(Customer c);
 private:
     QSqlDatabase db;
     bool existsQuery(QString q, QString id);
