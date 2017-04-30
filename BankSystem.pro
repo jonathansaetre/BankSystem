@@ -28,13 +28,17 @@ SOURCES += main.cpp\
     customerlist.cpp \
     customerdetails.cpp \
     transactionlist.cpp \
-    transactiondetails.cpp
+    transactiondetails.cpp \
+    dbmanager.cpp \
+    objects.cpp
 
 HEADERS  += mainwindow.h \
     customerlist.h \
     customerdetails.h \
     transactionlist.h \
-    transactiondetails.h
+    transactiondetails.h \
+    dbmanager.h \
+    objects.h
 
 FORMS    += mainwindow.ui \
     customerlist.ui \
