@@ -15,6 +15,12 @@ public:
     explicit Deletecustomer(QWidget *parent = 0);
     ~Deletecustomer();
 
+private slots:
+    void on_closeButton_clicked();
+
+signals:
+    void showPrev();
+
 private:
     Ui::Deletecustomer *ui;
 };

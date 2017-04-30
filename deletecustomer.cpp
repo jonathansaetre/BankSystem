@@ -12,3 +12,9 @@ Deletecustomer::~Deletecustomer()
 {
     delete ui;
 }
+
+void Deletecustomer::on_closeButton_clicked()
+{
+    close();
+    emit showPrev();
+}

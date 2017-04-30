@@ -12,3 +12,9 @@ accountcreate::~accountcreate()
 {
     delete ui;
 }
+
+void accountcreate::on_closeButton_clicked()
+{
+    close();
+    emit showPrev();
+}

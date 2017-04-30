@@ -15,6 +15,12 @@ public:
     explicit accountcreate(QWidget *parent = 0);
     ~accountcreate();
 
+private slots:
+    void on_closeButton_clicked();
+
+signals:
+    void showPrev();
+
 private:
     Ui::accountcreate *ui;
 };
