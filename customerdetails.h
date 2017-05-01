@@ -21,6 +21,8 @@ signals:
 private slots:
     void on_CloseButton_clicked();
 
+    void on_addButton_clicked();
+
 private:
     Ui::CustomerDetails *ui;
 };

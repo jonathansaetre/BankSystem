@@ -53,7 +53,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="nameBox">
+     <widget class="QLineEdit" name="name">
       <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ssdfsdf&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
@@ -79,7 +79,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="ssnBox">
+     <widget class="QLineEdit" name="ssn">
       <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ssdfsdf&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
@@ -105,7 +105,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="addressBox">
+     <widget class="QLineEdit" name="address">
       <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ssdfsdf&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
@@ -131,7 +131,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="phoneBox">
+     <widget class="QLineEdit" name="phone">
       <property name="whatsThis">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ssdfsdf&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
