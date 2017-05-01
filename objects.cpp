@@ -1,6 +1,5 @@
 #include "objects.h"
 
-
 struct Customer {
     QString id;
     QString name;
@@ -12,10 +11,15 @@ struct Customer {
 
 struct Account {
     QString id;
-    QString customerID;
     QString name;
+    QString customerID;
     QString balance;
-    QString address;
-    QString phone;
-    QString email;
+};
+
+struct Transaction {
+    QString id;
+    QString fromID;
+    QString toID;
+    QString amount;
+    QString date;
 };
