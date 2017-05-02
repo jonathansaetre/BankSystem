@@ -1,21 +1,16 @@
 #include "customerlist.h"
 #include "ui_customerlist.h"
 #include "customerdetails.h"
-#include<QFile>
-#include<QFileInfo>
-#include <QSqlDatabase>
-#include<QSqlQueryModel>
-#include<QSqlQuery>
-
-#include <QTextStream>
-//#include <QMessageBox>
-#include <QDebug>
+#include "dbmanager.h"
 
 CustomerList::CustomerList(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CustomerList)
 {
     ui->setupUi(this);
+    DbManager *dbManager = new DbManager();
+    ui->CustList->setModel(dbManager->fetchCustomerList());
+
 
 
 }
