@@ -1,4 +1,3 @@
-#include "objects.h"
 
 struct Customer {
     QString id;

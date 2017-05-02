@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     dbmanager.cpp \
     objects.cpp \
     accountcreate.cpp \
-    deletecustomer.cpp
+    deletecustomer.cpp \
+    columnindexes.cpp
 
 HEADERS  += mainwindow.h \
     customerlist.h \
@@ -40,7 +41,6 @@ HEADERS  += mainwindow.h \
     transactionlist.h \
     transactiondetails.h \
     dbmanager.h \
-    objects.h \
     accountcreate.h \
     deletecustomer.h
 
