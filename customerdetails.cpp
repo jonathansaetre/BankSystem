@@ -1,6 +1,7 @@
 #include "customerdetails.h"
 #include "ui_customerdetails.h"
 #include "dbmanager.h"
+#include<QMessageBox>
 
 CustomerDetails::CustomerDetails(QWidget *parent) :
     QWidget(parent),
@@ -29,5 +30,6 @@ void CustomerDetails::on_addButton_clicked()
     c.phone=ui->phone->text();
    DbManager *db=new DbManager();
    db->addCustomer(c);
+   QMessageBox::information(this,"Add customer ","Added customer Successfully");
 
 }
