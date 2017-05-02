@@ -1,6 +1,5 @@
 #ifndef TRANSACTIONDETAILS_H
 #define TRANSACTIONDETAILS_H
-
 #include <QWidget>
 
 namespace Ui {

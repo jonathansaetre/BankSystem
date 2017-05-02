@@ -1,6 +1,5 @@
 #ifndef CUSTOMERDETAILS_H
 #define CUSTOMERDETAILS_H
-
 #include <QWidget>
 
 namespace Ui {
@@ -20,7 +19,6 @@ signals:
 
 private slots:
     void on_CloseButton_clicked();
-
     void on_addButton_clicked();
 
 private:

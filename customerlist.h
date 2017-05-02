@@ -17,10 +17,7 @@ public:
 
 private slots:
     void on_buttonBack_clicked();
-
     void on_buttonNewCustomer_clicked();
-
-    void on_loadcust_clicked();
 
 signals:
     void showPrev();

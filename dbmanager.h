@@ -1,6 +1,5 @@
 #ifndef DBMANAGER_H
 #define DBMANAGER_H
-using namespace std;
 #include <QString>
 #include <QSqlDatabase>
 #include <objects.cpp>

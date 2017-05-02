@@ -1,26 +1,20 @@
-#include "transactiondetails.h"
-#include "ui_transactiondetails.h"
-#include "transactionlist.h"
+#include <transactiondetails.h>
+#include <ui_transactiondetails.h>
+#include <transactionlist.h>
 
-TransactionDetails::TransactionDetails(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::TransactionDetails)
-{
+TransactionDetails::TransactionDetails(QWidget *parent) : QWidget(parent), ui(new Ui::TransactionDetails) {
     ui->setupUi(this);
 }
 
-TransactionDetails::~TransactionDetails()
-{
+TransactionDetails::~TransactionDetails() {
     delete ui;
 }
 
-void TransactionDetails::on_buttonLagre_clicked()
-{
+void TransactionDetails::on_buttonLagre_clicked() {
 
 }
 
-void TransactionDetails::on_buttonBack_clicked()
-{
+void TransactionDetails::on_buttonBack_clicked() {
     close();
     emit showPrev();
 }

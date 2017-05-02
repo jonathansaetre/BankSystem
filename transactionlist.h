@@ -1,6 +1,5 @@
 #ifndef TRANSACTIONLIST_H
 #define TRANSACTIONLIST_H
-
 #include <QWidget>
 
 namespace Ui {
@@ -17,7 +16,6 @@ public:
 
 private slots:
     void on_buttonNewTransaction_clicked();
-
     void on_buttonBack_clicked();
 
 signals:

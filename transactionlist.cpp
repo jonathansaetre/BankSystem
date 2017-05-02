@@ -1,29 +1,25 @@
-#include "transactionlist.h"
-#include "ui_transactionlist.h"
-#include "transactiondetails.h"
+#include <transactionlist.h>
+#include <ui_transactionlist.h>
+#include <transactiondetails.h>
+#include <dbmanager.h>
 
-TransactionList::TransactionList(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::TransactionList)
-{
+TransactionList::TransactionList(QWidget *parent) : QWidget(parent), ui(new Ui::TransactionList) {
     ui->setupUi(this);
+    ui->listView->setModel(DbManager::getInstance()->fetchTransactionList());
 }
 
-TransactionList::~TransactionList()
-{
+TransactionList::~TransactionList() {
     delete ui;
 }
 
-void TransactionList::on_buttonNewTransaction_clicked()
-{
+void TransactionList::on_buttonNewTransaction_clicked() {
     hide();
     TransactionDetails *transDet = new TransactionDetails();
     QObject::connect(transDet, SIGNAL(showPrev()), SLOT(show()));
     transDet->show();
 }
 
-void TransactionList::on_buttonBack_clicked()
-{
+void TransactionList::on_buttonBack_clicked() {
     close();
     emit showPrev();
 }

@@ -1,20 +1,15 @@
-#include "accountcreate.h"
-#include "ui_accountcreate.h"
+#include <accountcreate.h>
+#include <ui_accountcreate.h>
 
-accountcreate::accountcreate(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::accountcreate)
-{
+AccountCreate::AccountCreate(QWidget *parent) : QDialog(parent), ui(new Ui::accountcreate) {
     ui->setupUi(this);
 }
 
-accountcreate::~accountcreate()
-{
+AccountCreate::~AccountCreate() {
     delete ui;
 }
 
-void accountcreate::on_closeButton_clicked()
-{
+void AccountCreate::on_closeButton_clicked() {
     close();
     emit showPrev();
 }

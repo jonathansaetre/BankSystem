@@ -1,4 +1,3 @@
-
 struct Customer {
     QString id;
     QString name;

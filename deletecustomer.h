@@ -18,10 +18,8 @@ public:
 
 private slots:
     void on_closeButton_clicked();
-
     void on_deleteButton_clicked();
-
-    void on_customerCombobox_currentIndexChanged(const QString &arg1);
+    void on_customerCombobox_currentIndexChanged();
 
 signals:
     void showPrev();
@@ -29,8 +27,6 @@ signals:
 private:
     Ui::Deletecustomer *ui;
     QSqlQueryModel *model;
-    DbManager *dbmanager;
-
 };
 
 #endif // DELETECUSTOMER_H
