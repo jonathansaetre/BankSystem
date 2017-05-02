@@ -4,12 +4,35 @@
 #include <QSqlError>
 #include <QCoreApplication>
 #include <QSqlRecord>
+#include <QFileInfo>
+#include <QMessageBox>
 
+DbManager* DbManager::instance = NULL;
+DbManager* DbManager::getInstance() {
+    if(instance == NULL || !instance->db.isOpen()) instance = new DbManager();
+    return instance;
+}
 
 DbManager::DbManager() {
+    QFileInfo check_file("BankingSystem.db");
+    if (!(check_file.exists() && check_file.isFile())) {
+        QMessageBox::critical(NULL, "Connecting to database", "Couldn't locate the database");
+        qDebug() << "Error DbManager: Couldn't locate the database";
+        return;
+    }
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("BankingSystem.db");
-    if (!db.open() || db.tables().empty()) qDebug() << "Error: connection with database fail";
+    if (!db.open()) {
+        QMessageBox::critical(NULL, "Connecting to database", "Failed connecting to database");
+        qDebug() << "Error DbManager: Failed connecting to database";
+        return;
+    }
+    if(db.tables().isEmpty() || !db.tables().contains("Customer") || !db.tables().contains("Account") || !db.tables().contains("Transaction")) {
+        db.close();
+        QMessageBox::critical(NULL, "Connecting to database", "Database is not configured correctly");
+        qDebug() << "Error DbManager: Database is not configured correctly";
+    }
+
 }
 
 bool DbManager::addCustomer(const Customer r) {
@@ -22,7 +45,7 @@ bool DbManager::addCustomer(const Customer r) {
     query.bindValue(":email", r.email);
     if(query.exec()) return true;
     qDebug() << query.executedQuery();
-    qDebug() << "addCustomer error:  " << query.lastError();
+    qDebug() << "Error addCustomer:  " << query.lastError();
     return false;
 }
 

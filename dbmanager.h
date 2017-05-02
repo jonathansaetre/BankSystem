@@ -8,7 +8,7 @@ using namespace std;
 
 class DbManager {
 public:
-    DbManager();
+    static DbManager* getInstance();
     bool addCustomer(Customer c);
     bool addAccount(Account c);
     bool addTransaction(Transaction c);
@@ -30,6 +30,8 @@ public:
     QSqlQueryModel* fetchTransactionList();
 
 private:
+    DbManager();
+    static DbManager *instance;
     QSqlDatabase db;
     bool existsRecordQuery(QString q, QString id);
 };
