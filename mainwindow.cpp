@@ -51,12 +51,14 @@ void MainWindow::on_actionNew_triggered()
     CustomerDetails *customerDet = new CustomerDetails();
     QObject::connect(customerDet, SIGNAL(showPrev()), SLOT(show()));
     customerDet->show();
+
+
 }
 
 void MainWindow::on_actionDelete_triggered()
 {
     hide();
-    Deletecustomer *customerDelete = new Deletecustomer();
+    Customerdelete *customerDelete = new Customerdelete();
     QObject::connect(customerDelete, SIGNAL(showPrev()), SLOT(show()));
     customerDelete->show();
 }

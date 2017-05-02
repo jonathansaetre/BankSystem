@@ -24,12 +24,19 @@ void CustomerDetails::on_CloseButton_clicked()
 void CustomerDetails::on_addButton_clicked()
 {
     Customer c;
-    c.name=ui->name->text();
-    c.ssn=ui->ssn->text();
-    c.address=ui->address->text();
-    c.phone=ui->phone->text();
+    c.name = ui->nameBox->text();
+    c.ssn = ui->ssnBox->text();
+    c.address = ui->addressBox->text();
+    c.phone = ui->phoneBox->text();
+    c.email = ui->emailBox->text();
+
    DbManager *db=new DbManager();
-   db->addCustomer(c);
-   QMessageBox::information(this,"Add customer ","Added customer Successfully");
+
+   if(db->addCustomer(c)){
+         QMessageBox::information(this,"Add customer ","Added customer Successfully");
+      }else{
+         QMessageBox::information(this,"Add customer ","Added customer Failed");
+     }
+
 
 }

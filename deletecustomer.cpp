@@ -1,43 +1,54 @@
 #include "deletecustomer.h"
 #include "ui_deletecustomer.h"
-#include "dbmanager.h"
+#include <columnindexes.cpp>
 #include<QSqlQueryModel>
+#include<QMessageBox>
 #include <QSqlRecord>
 
-Deletecustomer::Deletecustomer(QWidget *parent) :
+Customerdelete::Customerdelete(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Deletecustomer)
 {
     ui->setupUi(this);
-    DbManager *dbmanager=new DbManager();
+    dbmanager=new DbManager();
     model = dbmanager->fetchCustomerList();
 
-    ui->combocustomer->setModel(model);
-     ui->combocustomer->setModelColumn(2);
+    ui->customerCombobox->setModel(model);
+    ui->customerCombobox->setModelColumn(CUSTOMER_SSN);
 }
 
-Deletecustomer::~Deletecustomer()
+Customerdelete::~Customerdelete()
 {
     delete ui;
 }
 
-void Deletecustomer::on_closeButton_clicked()
+void Customerdelete::on_closeButton_clicked()
 {
     close();
     emit showPrev();
 }
 
-void Deletecustomer::on_combocustomer_currentIndexChanged(const QString &arg1)
-{
-    int index=ui->combocustomer->currentIndex();
 
-    QString ssn = model->record(index).value(1).toString();
-    ui->name=ssn;
+
+void Customerdelete::on_deleteButton_clicked()
+{
+    Customer c;
+    int index = ui->customerCombobox->currentIndex();
+    c.id = model->record(index).value(CUSTOMER_ID).toString();
+    if(dbmanager->deleteCustomer(c)){
+        QMessageBox::information(this,"Delete customer ","Deleted customer Successfully");
+    }else{
+        QMessageBox::information(this,"Delete customer ","Deleted customer Failed");
+    }
+
+
 }
 
-void Deletecustomer::on_deleteButton_clicked()
+void Customerdelete::on_customerCombobox_currentIndexChanged(const QString &arg1)
 {
-    DbManager db=new DbManager();
-   // db.deleteCustomer()
 
+    int index = ui->customerCombobox->currentIndex();
+
+    QString name = model->record(index).value(CUSTOMER_NAME).toString();
+    ui->nameBox->setText(name);
 }

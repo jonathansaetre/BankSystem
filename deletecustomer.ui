@@ -38,7 +38,7 @@
      <string>Customer</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="combocustomer">
+   <widget class="QComboBox" name="customerCombobox">
     <property name="geometry">
      <rect>
       <x>180</x>
@@ -48,7 +48,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="nameLabel">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -61,7 +61,7 @@
      <string>Name</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="name">
+   <widget class="QLineEdit" name="nameBox">
     <property name="geometry">
      <rect>
       <x>180</x>

@@ -1,26 +1,27 @@
 #ifndef DELETECUSTOMER_H
 #define DELETECUSTOMER_H
-#include<qsqlquerymodel.h>
+#include <QSqlQueryModel>
+#include <dbmanager.h>
 #include <QDialog>
 
 namespace Ui {
 class Deletecustomer;
 }
 
-class Deletecustomer : public QDialog
+class Customerdelete : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Deletecustomer(QWidget *parent = 0);
-    ~Deletecustomer();
+    explicit Customerdelete(QWidget *parent = 0);
+    ~Customerdelete();
 
 private slots:
     void on_closeButton_clicked();
 
-    void on_combocustomer_currentIndexChanged(const QString &arg1);
-
     void on_deleteButton_clicked();
+
+    void on_customerCombobox_currentIndexChanged(const QString &arg1);
 
 signals:
     void showPrev();
@@ -28,6 +29,7 @@ signals:
 private:
     Ui::Deletecustomer *ui;
     QSqlQueryModel *model;
+    DbManager *dbmanager;
 
 };
 
