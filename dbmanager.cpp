@@ -51,10 +51,12 @@ bool DbManager::addCustomer(const Customer r) {
 
 bool DbManager::addAccount(const Account r) {
     QSqlQuery query(db);
-    query.prepare("INSERT INTO Account (name, customerid, balance) VALUES (:name, :customerid, :balance)");
-    query.bindValue(":name", r.name);
+    query.prepare("INSERT INTO Account (customerid, accountnr, name, balance, date) VALUES (:customerid, :accountnr, :name, :balance, :date)");
     query.bindValue(":customerid", r.customerID);
+    query.bindValue(":accountnr", r.accountnr);
+    query.bindValue(":name", r.name);
     query.bindValue(":balance", r.balance);
+    query.bindValue(":date", r.date);
     if(query.exec()) return true;
     qDebug() << query.executedQuery();
     qDebug() << "addAccount error:  " << query.lastError();

@@ -1,5 +1,7 @@
 #ifndef ACCOUNTCREATE_H
 #define ACCOUNTCREATE_H
+#include<QSqlQueryModel>
+#include <dbmanager.h>
 #include <QDialog>
 
 namespace Ui {
@@ -17,11 +19,16 @@ public:
 private slots:
     void on_closeButton_clicked();
 
+    void on_comboAccount_currentIndexChanged(const QString &arg1);
+
+    void on_addButton_clicked();
+
 signals:
     void showPrev();
 
 private:
     Ui::accountcreate *ui;
+     QSqlQueryModel *model;
 };
 
 #endif // ACCOUNTCREATE_H

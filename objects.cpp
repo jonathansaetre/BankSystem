@@ -9,9 +9,11 @@ struct Customer {
 
 struct Account {
     QString id;
-    QString name;
     QString customerID;
+    QString accountnr;
+    QString name;
     QString balance;
+    QString date;
 };
 
 struct Transaction {
