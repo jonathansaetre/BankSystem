@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>564</width>
+    <width>726</width>
     <height>540</height>
    </rect>
   </property>
@@ -14,26 +14,13 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="buttonCustomers">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>150</y>
-      <width>101</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Customers</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
       <x>160</x>
       <y>20</y>
-      <width>191</width>
-      <height>61</height>
+      <width>431</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="font">
@@ -47,30 +34,54 @@
     <property name="text">
      <string>Extreme banking</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
-   <widget class="QPushButton" name="buttonTransactions">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>210</y>
-      <width>101</width>
-      <height>31</height>
+      <x>280</x>
+      <y>150</y>
+      <width>171</width>
+      <height>211</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Transactions</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="buttonCustomers">
+       <property name="text">
+        <string>Customers</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonTransactions">
+       <property name="text">
+        <string>Transactions</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="exitButton">
+       <property name="text">
+        <string>Exit</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
    <zorder>label</zorder>
    <zorder>buttonTransactions</zorder>
    <zorder>buttonCustomers</zorder>
+   <zorder>exitButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>564</width>
+     <width>726</width>
      <height>21</height>
     </rect>
    </property>
@@ -96,7 +107,7 @@
    </widget>
    <widget class="QMenu" name="menuExit">
     <property name="title">
-     <string>Exit</string>
+     <string> </string>
     </property>
    </widget>
    <addaction name="menuCustomer"/>
@@ -115,27 +126,27 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
    <property name="text">
-    <string>New </string>
+    <string>New Customer</string>
    </property>
   </action>
   <action name="actionUpdate">
    <property name="text">
-    <string>Update</string>
+    <string>Update Customer</string>
    </property>
   </action>
   <action name="actionDelete">
    <property name="text">
-    <string>Delete</string>
+    <string>Delete Customer</string>
    </property>
   </action>
   <action name="actionNew_2">
    <property name="text">
-    <string>New</string>
+    <string>New Account</string>
    </property>
   </action>
   <action name="actionDelete_2">
    <property name="text">
-    <string>Delete</string>
+    <string>Delete Account</string>
    </property>
   </action>
  </widget>

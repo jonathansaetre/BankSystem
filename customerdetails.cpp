@@ -14,6 +14,7 @@ CustomerDetails::~CustomerDetails() {
 void CustomerDetails::on_CloseButton_clicked() {
     close();
     emit showPrev();
+
 }
 
 void CustomerDetails::on_addButton_clicked() {
@@ -29,4 +30,11 @@ void CustomerDetails::on_addButton_clicked() {
     } else {
         QMessageBox::information(this, "Add customer", "Add customer failed");
     }
+
+    ui->nameBox->setText("");
+    ui->ssnBox->setText("");
+    ui->addressBox->setText("");
+    ui->phoneBox->setText("");
+    ui->emailBox->setText("");
+
 }

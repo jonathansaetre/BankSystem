@@ -30,6 +30,10 @@ void Customerdelete::on_deleteButton_clicked() {
     } else {
         QMessageBox::information(this, "Delete customer ", "Deleted customer Failed");
     }
+
+    model = DbManager::getInstance()->fetchCustomerList();
+    ui->customerCombobox->setModel(model);
+    ui->customerCombobox->setModelColumn(CUSTOMER_SSN);
 }
 
 void Customerdelete::on_customerCombobox_currentIndexChanged() {

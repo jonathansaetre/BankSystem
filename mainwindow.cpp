@@ -50,3 +50,8 @@ void MainWindow::on_actionNew_2_triggered() {
     QObject::connect(createaccount, SIGNAL(showPrev()), SLOT(show()));
     createaccount->show();
 }
+
+void MainWindow::on_exitButton_clicked()
+{
+    close();
+}

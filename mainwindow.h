@@ -22,6 +22,8 @@ private slots:
     void on_actionDelete_triggered();
     void on_actionNew_2_triggered();
 
+    void on_exitButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
