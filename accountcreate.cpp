@@ -1,6 +1,6 @@
 #include <accountcreate.h>
 #include <ui_accountcreate.h>
-//#include <columnindexes.cpp>
+#include <c.cpp>
 #include <QSqlQueryModel>
 #include <QMessageBox>
 #include <QSqlRecord>
@@ -10,7 +10,7 @@ AccountCreate::AccountCreate(QWidget *parent) : QDialog(parent), ui(new Ui::acco
     ui->setupUi(this);
     model = DbManager::getInstance()->fetchCustomerList();
     ui->comboAccount->setModel(model);
-    ui->comboAccount->setModelColumn(2);
+    ui->comboAccount->setModelColumn(C::DB_ACCOUNT_ACCOUNTNR);
 }
 
 AccountCreate::~AccountCreate() {
@@ -24,15 +24,13 @@ void AccountCreate::on_closeButton_clicked() {
 
 
 
-void AccountCreate::on_comboAccount_currentIndexChanged(const QString &arg1)
-{
+void AccountCreate::on_comboAccount_currentIndexChanged() {
     int index = ui->comboAccount->currentIndex();
-    QString name = model->record(index).value(1).toString();
+    QString name = model->record(index).value(C::DB_ACCOUNT_NAME).toString();
     ui->nameBox->setText(name);
 }
 
-void AccountCreate::on_addButton_clicked()
-{
+void AccountCreate::on_addButton_clicked() {
     Account ac;
     ac.customerID = ui->comboAccount->currentText();
     ac.accountnr = ui->accounNrBox->text();
@@ -49,7 +47,7 @@ void AccountCreate::on_addButton_clicked()
     //Initialise
     model = DbManager::getInstance()->fetchCustomerList();
     ui->comboAccount->setModel(model);
-    ui->comboAccount->setModelColumn(2);
+    ui->comboAccount->setModelColumn(C::DB_ACCOUNT_ACCOUNTNR);
     ui->accounNrBox->setText("");
     ui->nameBox->setText("");
     ui->balanceBox->setText("");

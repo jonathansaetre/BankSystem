@@ -18,9 +18,7 @@ public:
 
 private slots:
     void on_closeButton_clicked();
-
-    void on_comboAccount_currentIndexChanged(const QString &arg1);
-
+    void on_comboAccount_currentIndexChanged();
     void on_addButton_clicked();
 
 signals:

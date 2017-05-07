@@ -38,7 +38,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>280</x>
@@ -71,10 +71,8 @@
      </item>
     </layout>
    </widget>
+   <zorder>layoutWidget</zorder>
    <zorder>label</zorder>
-   <zorder>buttonTransactions</zorder>
-   <zorder>buttonCustomers</zorder>
-   <zorder>exitButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -82,8 +80,11 @@
      <x>0</x>
      <y>0</y>
      <width>726</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>false</bool>
    </property>
    <widget class="QMenu" name="menuCustomer">
     <property name="title">
@@ -107,7 +108,7 @@
    </widget>
    <widget class="QMenu" name="menuExit">
     <property name="title">
-     <string> </string>
+     <string/>
     </property>
    </widget>
    <addaction name="menuCustomer"/>

@@ -8,6 +8,8 @@
 class DbManager {
 public:
     static DbManager* getInstance();
+    static void close();
+
     bool addCustomer(Customer c);
     bool addAccount(Account c);
     bool addTransaction(Transaction c);
@@ -27,12 +29,16 @@ public:
     QSqlQueryModel* fetchCustomerList();
     QSqlQueryModel* fetchAccountList();
     QSqlQueryModel* fetchTransactionList();
+    QSqlQuery fetchCustomerFTSlist(QString s);
 
 private:
     DbManager();
     static DbManager *instance;
     QSqlDatabase db;
     bool existsRecordQuery(QString q, QString id);
+    bool addCustomerFST(Customer r);
+    bool updateCustomerFST(Customer r);
+    bool deleteCustomerFST(Customer r);
 };
 
 #endif // DBMANAGER_H

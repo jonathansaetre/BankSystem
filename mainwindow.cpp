@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 }
 
 MainWindow::~MainWindow() {
+    DbManager::close();
     delete ui;
 }
 
@@ -51,7 +52,7 @@ void MainWindow::on_actionNew_2_triggered() {
     createaccount->show();
 }
 
-void MainWindow::on_exitButton_clicked()
-{
-    close();
+void MainWindow::on_exitButton_clicked() {
+    DbManager::close();
+    QApplication::quit();
 }

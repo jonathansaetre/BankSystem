@@ -26,14 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     customerlist.cpp \
-    customerdetails.cpp \
     transactionlist.cpp \
     transactiondetails.cpp \
     dbmanager.cpp \
     objects.cpp \
     accountcreate.cpp \
     deletecustomer.cpp \
-    columnindexes.cpp
+    customerdetails.cpp \
+    c.cpp
 
 HEADERS  += mainwindow.h \
     customerlist.h \
