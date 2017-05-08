@@ -1,0 +1,22 @@
+#ifndef ACCOUNTDELETE_H
+#define ACCOUNTDELETE_H
+
+#include <QDialog>
+
+namespace Ui {
+class accountdelete;
+}
+
+class accountdelete : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit accountdelete(QWidget *parent = 0);
+    ~accountdelete();
+
+private:
+    Ui::accountdelete *ui;
+};
+
+#endif // ACCOUNTDELETE_H
