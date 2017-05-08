@@ -5,6 +5,7 @@
 #include <customerdetails.h>
 #include <deletecustomer.h>
 #include <accountcreate.h>
+#include <accountdelete.h>
 #include <dbmanager.h>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -55,4 +56,12 @@ void MainWindow::on_actionNew_2_triggered() {
 void MainWindow::on_exitButton_clicked() {
     DbManager::close();
     QApplication::quit();
+}
+
+void MainWindow::on_actionDelete_2_triggered()
+{
+    hide();
+    accountdelete *accountdel = new accountdelete();
+    QObject::connect(accountdel, SIGNAL(showPrev()), SLOT(show()));
+    accountdel->show();
 }

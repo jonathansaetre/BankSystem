@@ -15,6 +15,12 @@ public:
     explicit accountdelete(QWidget *parent = 0);
     ~accountdelete();
 
+signals:
+    void showPrev();
+
+private slots:
+    void on_cancelButton_clicked();
+
 private:
     Ui::accountdelete *ui;
 };

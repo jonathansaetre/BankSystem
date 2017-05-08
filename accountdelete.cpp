@@ -6,9 +6,16 @@ accountdelete::accountdelete(QWidget *parent) :
     ui(new Ui::accountdelete)
 {
     ui->setupUi(this);
+    setFocus();
 }
 
 accountdelete::~accountdelete()
 {
     delete ui;
+}
+
+void accountdelete::on_cancelButton_clicked()
+{
+    close();
+    emit showPrev();
 }

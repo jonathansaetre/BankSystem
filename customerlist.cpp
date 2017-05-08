@@ -6,6 +6,7 @@
 
 CustomerList::CustomerList(QWidget *parent) : QWidget(parent), ui(new Ui::CustomerList) {
     ui->setupUi(this);
+    setFocus();
     model = new QSqlQueryModel();
     ui->custList->setModel(model);
     model->setQuery(DbManager::getInstance()->fetchCustomerFTSlist(QString("")));

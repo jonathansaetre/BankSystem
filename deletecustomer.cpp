@@ -7,6 +7,7 @@
 
 Customerdelete::Customerdelete(QWidget *parent) : QDialog(parent), ui(new Ui::Deletecustomer) {
     ui->setupUi(this);
+    setFocus();
     model = DbManager::getInstance()->fetchCustomerList();
     ui->customerCombobox->setModel(model);
     ui->customerCombobox->setModelColumn(C::DB_CUSTOMER_SSN);
