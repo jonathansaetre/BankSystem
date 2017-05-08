@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>750</width>
+    <height>550</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,9 +16,9 @@
   <widget class="QLabel" name="labelTransactions">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>20</y>
-     <width>111</width>
+     <x>270</x>
+     <y>10</y>
+     <width>231</width>
      <height>41</height>
     </rect>
    </property>
@@ -38,19 +38,19 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>91</y>
-     <width>381</width>
-     <height>201</height>
+     <y>100</y>
+     <width>711</width>
+     <height>421</height>
     </rect>
    </property>
   </widget>
   <widget class="QPushButton" name="buttonNewTransaction">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>60</y>
-     <width>91</width>
-     <height>23</height>
+     <x>590</x>
+     <y>52</y>
+     <width>121</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
@@ -60,10 +60,10 @@
   <widget class="QPushButton" name="buttonBack">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>60</y>
-     <width>75</width>
-     <height>23</height>
+     <x>20</x>
+     <y>62</y>
+     <width>111</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">

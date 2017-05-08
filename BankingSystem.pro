@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     customerlist.cpp \
+    accountdelete.cpp \
     transactionlist.cpp \
     transactiondetails.cpp \
     dbmanager.cpp \
@@ -37,6 +38,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     customerlist.h \
+    accountdelete.h \
     customerdetails.h \
     transactionlist.h \
     transactiondetails.h \
@@ -46,6 +48,7 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     customerlist.ui \
+    accountdelete.ui \
     customerdetails.ui \
     transactionlist.ui \
     transactiondetails.ui \
