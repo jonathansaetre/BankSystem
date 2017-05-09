@@ -10,7 +10,6 @@
 CustomerDetails::CustomerDetails(QWidget *parent) : QWidget(parent), ui(new Ui::CustomerDetails) {
     ui->setupUi(this);
     setFocus();
-     ui->accountList->setModel(DbManager::getInstance()->fetchAccountList(""));
 }
 
 CustomerDetails::~CustomerDetails() {
@@ -31,6 +30,8 @@ void CustomerDetails::editCustomer(QSqlQueryModel *model, int index) {
     ui->phoneBox->setText(model->record(index).value(C::DB_CUSTOMER_ADDRESS).toString());
     ui->addressBox->setText(model->record(index).value(C::DB_CUSTOMER_PHONE).toString());
     ui->emailBox->setText(model->record(index).value(C::DB_CUSTOMER_EMAIL).toString());
+    ui->accountList->setModel(DbManager::getInstance()->fetchAccountList(ui->ssnBox->text()));
+
 }
 
 void CustomerDetails::save(bool closeWindow) {
