@@ -10,6 +10,7 @@
 CustomerDetails::CustomerDetails(QWidget *parent) : QWidget(parent), ui(new Ui::CustomerDetails) {
     ui->setupUi(this);
     setFocus();
+     ui->accountList->setModel(DbManager::getInstance()->fetchAccountList());
 }
 
 CustomerDetails::~CustomerDetails() {
@@ -18,6 +19,7 @@ CustomerDetails::~CustomerDetails() {
 
 void CustomerDetails::newCustomer() {
     ui->labelTitle->setText("New customer");
+    ui->accountList->hide();
 }
 
 void CustomerDetails::editCustomer(QSqlQueryModel *model, int index) {
@@ -73,3 +75,5 @@ void CustomerDetails::on_buttonSave_clicked() {
 void CustomerDetails::on_buttonSave_New_clicked() {
     save(false);
 }
+
+
