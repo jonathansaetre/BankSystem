@@ -10,7 +10,7 @@
 CustomerDetails::CustomerDetails(QWidget *parent) : QWidget(parent), ui(new Ui::CustomerDetails) {
     ui->setupUi(this);
     setFocus();
-     ui->accountList->setModel(DbManager::getInstance()->fetchAccountList());
+     ui->accountList->setModel(DbManager::getInstance()->fetchAccountList(""));
 }
 
 CustomerDetails::~CustomerDetails() {

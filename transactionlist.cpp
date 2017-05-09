@@ -5,7 +5,7 @@
 
 TransactionList::TransactionList(QWidget *parent) : QWidget(parent), ui(new Ui::TransactionList) {
     ui->setupUi(this);
-    ui->listView->setModel(DbManager::getInstance()->fetchTransactionList());
+    ui->listView->setModel(DbManager::getInstance()->fetchTransactionList(""));
 }
 
 TransactionList::~TransactionList() {

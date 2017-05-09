@@ -27,15 +27,17 @@ public:
     Transaction fetchTransaction(Transaction c);
 
     QSqlQueryModel* fetchCustomerList();
-    QSqlQueryModel* fetchAccountList();
-    QSqlQueryModel* fetchTransactionList();
+    QSqlQueryModel* fetchAccountList(QString customerID);
+    QSqlQueryModel* fetchTransactionList(QString customerID);
     QSqlQuery fetchCustomerFTSlist(QString s);
+
+    bool existsSSN(QString ssn);
 
 private:
     DbManager();
     static DbManager *instance;
     QSqlDatabase db;
-    bool existsRecordQuery(QString q, QString id);
+    bool existsQuery(QString q);
     bool addCustomerFST(Customer r);
     bool updateCustomerFST(Customer r);
     bool deleteCustomerFST(Customer r);

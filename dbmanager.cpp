@@ -119,7 +119,6 @@ bool DbManager::addTransaction(const Transaction r) {
 bool DbManager::updateCustomer(const Customer r) {
     db.transaction();
     QSqlQuery query(db);
-    if(!existsRecordQuery("SELECT * FROM Customer WHERE id=:id", r.id)) return false;
     query.prepare("UPDATE Customer SET name=:name, ssn=:ssn, phone=:phone, address=:address, email=:email WHERE id=:id");
     query.bindValue(":id", r.id);
     query.bindValue(":name", r.name);
@@ -141,10 +140,13 @@ bool DbManager::updateCustomer(const Customer r) {
 bool DbManager::updateCustomerFST(const Customer r) {
     db.transaction();
     QSqlQuery query(db);
-    if(!existsRecordQuery("SELECT * FROM CustomerFST WHERE id=:id", r.id)) return false;
-    query.prepare("UPDATE Customer SET name=:name WHERE customerid=:customerid");
-    query.bindValue(":customerid", r.id);
+    query.prepare("UPDATE CustomerFTS SET name=:name, ssn=:ssn, phone=:phone, address=:address, email=:email WHERE id=:id");
+    query.bindValue(":id", r.id);
     query.bindValue(":name", r.name);
+    query.bindValue(":ssn", r.ssn);
+    query.bindValue(":phone", r.phone);
+    query.bindValue(":address", r.address);
+    query.bindValue(":email", r.email);
     bool success = query.exec();
     if(!success) {
         qDebug() << query.executedQuery();
@@ -157,7 +159,6 @@ bool DbManager::updateCustomerFST(const Customer r) {
 bool DbManager::updateAccount(const Account r) {
     db.transaction();
     QSqlQuery query(db);
-    if(!existsRecordQuery("SELECT * FROM Account WHERE id=:id", r.id)) return false;
     query.prepare("UPDATE Account SET name=:name, customerid=:customerid, balance=:balance WHERE id=:id");
     query.bindValue(":id", r.id);
     query.bindValue(":name", r.name);
@@ -175,7 +176,6 @@ bool DbManager::updateAccount(const Account r) {
 bool DbManager::updateTransaction(const Transaction r) {
     db.transaction();
     QSqlQuery query(db);
-    if(!existsRecordQuery("SELECT * FROM Transaction WHERE id=:id", r.id)) return false;
     query.prepare("UPDATE Transaction SET fromid=:fromid, toid=:toid, amount=:amount, date=:date WHERE id=:id");
     query.bindValue(":id", r.id);
     query.bindValue(":fromid", r.fromID);
@@ -194,7 +194,6 @@ bool DbManager::updateTransaction(const Transaction r) {
 bool DbManager::deleteCustomer(const Customer r) {
     db.transaction();
     QSqlQuery query(db);
-    if(!existsRecordQuery("SELECT * FROM Customer where id=:id", r.id)) return false;
     query.prepare("DELETE from Customer where id=:id");
     query.bindValue(":id", r.id);
     bool success = query.exec();
@@ -211,8 +210,8 @@ bool DbManager::deleteCustomer(const Customer r) {
 bool DbManager::deleteCustomerFST(const Customer r) {
     db.transaction();
     QSqlQuery query(db);
-    query.prepare("DELETE from CustomerFST where customerid=:customerid");
-    query.bindValue(":customerid", r.id);
+    query.prepare("DELETE from CustomerFTS where id=:id");
+    query.bindValue(":id", r.id);
     bool success = query.exec();
     if(!success) {
         qDebug() << query.executedQuery();
@@ -225,7 +224,6 @@ bool DbManager::deleteCustomerFST(const Customer r) {
 bool DbManager::deleteAccount(const Account r) {
     db.transaction();
     QSqlQuery query(db);
-    if(!existsRecordQuery("SELECT * FROM Account where id=:id", r.id)) return false;
     query.prepare("DELETE from Account where id=:id");
     query.bindValue(":id", r.id);
     bool success = query.exec();
@@ -240,7 +238,6 @@ bool DbManager::deleteAccount(const Account r) {
 bool DbManager::deleteTransaction(const Transaction r) {
     db.transaction();
     QSqlQuery query(db);
-    if(!existsRecordQuery("SELECT * FROM Transaction where id=:id", r.id)) return false;
     query.prepare("DELETE from Transaction where id=:id");
     query.bindValue(":id", r.id);
     bool success = query.exec();
@@ -355,11 +352,12 @@ QSqlQuery DbManager::fetchCustomerFTSlist(QString s) {
     return query;
 }
 
-QSqlQueryModel* DbManager::fetchAccountList() {
+QSqlQueryModel* DbManager::fetchAccountList(QString customerID) {
     db.transaction();
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query(db);
-    query.prepare("SELECT * FROM Account");
+    query.prepare("SELECT * FROM Account where customerid=:customerid");
+    query.bindValue(":customerid", customerID);
     if(query.exec()) {
         model->setQuery(query);
     } else {
@@ -370,11 +368,12 @@ QSqlQueryModel* DbManager::fetchAccountList() {
     return model;
 }
 
-QSqlQueryModel* DbManager::fetchTransactionList() {
+QSqlQueryModel* DbManager::fetchTransactionList(QString customerID) {
     db.transaction();
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query(db);
-    query.prepare("SELECT * FROM Transaction");
+    query.prepare("SELECT * FROM Transaction where customerid=:customerid");
+    query.bindValue(":customerid", customerID);
     if(query.exec()) {
         model->setQuery(query);
     } else {
@@ -385,14 +384,17 @@ QSqlQueryModel* DbManager::fetchTransactionList() {
     return model;
 }
 
-bool DbManager::existsRecordQuery(const QString queryString, QString id) {
+bool DbManager::existsSSN(QString ssn) {
+    return existsQuery("SELECT ssn FROM Customer where ssn = '" + ssn + "'");
+}
+
+bool DbManager::existsQuery(const QString queryString) {
     db.transaction();
     QSqlQuery query(db);
     query.prepare(queryString);
-    query.bindValue(":id", id);
     bool finnes;
     if(query.exec()) {
-        if(query.isSelect() && query.next()) finnes = true;
+        if(query.isSelect() && query.first()) finnes = true;
     } else {
         qDebug() << "existsQuery error: " << query.lastError();
         qDebug() << query.executedQuery();
