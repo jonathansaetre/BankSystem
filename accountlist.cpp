@@ -1,5 +1,6 @@
 #include "accountlist.h"
 #include "ui_accountlist.h"
+#include <accountcreate.h>
 #include <QSqlRecord>
 #include <c.cpp>
 
@@ -8,6 +9,7 @@ AccountList::AccountList(QWidget *parent) :
     ui(new Ui::AccountList)
 {
     ui->setupUi(this);
+
 }
 
 AccountList::~AccountList()
@@ -18,12 +20,18 @@ AccountList::~AccountList()
 void AccountList::accounts(QSqlQueryModel *model) {
 
     ui->accountList->setModel(model);
-    ui->customerBox->setText(model->record(1).value(C::DB_ACCOUNT_NAME).toString());
-
 }
 
 void AccountList::on_cancelButton_clicked()
 {
     close();
     emit showPrev();
+}
+
+void AccountList::on_Newaccount_clicked()
+{
+    hide();
+    AccountCreate *createaccount = new AccountCreate();
+    QObject::connect(createaccount, SIGNAL(showPrev()), SLOT(show()));
+    createaccount->show();
 }

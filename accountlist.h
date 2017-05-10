@@ -24,6 +24,8 @@ private slots:
     void on_cancelButton_clicked();
 
 
+    void on_Newaccount_clicked();
+
 private:
     Ui::AccountList *ui;
 };
