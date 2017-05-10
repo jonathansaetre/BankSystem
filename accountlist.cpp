@@ -22,6 +22,10 @@ void AccountList::accounts(QSqlQueryModel *model) {
     ui->accountList->setModel(model);
 }
 
+void AccountList::customerName(QString name){
+    ui->customerBox->setText(name);
+}
+
 void AccountList::on_cancelButton_clicked()
 {
     close();

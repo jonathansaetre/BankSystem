@@ -84,6 +84,7 @@ void CustomerDetails::on_accountButton_clicked()
     hide();
     AccountList *accountlist = new AccountList();
     accountlist->accounts(DbManager::getInstance()->fetchAccountList(ui->ssnBox->text()));
+    accountlist->customerName(ui->nameBox->text());
     QObject::connect(accountlist, SIGNAL(showPrev()), SLOT(showCustDetails()));
     accountlist->show();
 }

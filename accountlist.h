@@ -16,6 +16,7 @@ public:
     explicit AccountList(QWidget *parent = 0);
     ~AccountList();
     void accounts(QSqlQueryModel *model);
+     void customerName(QString name);
 
 signals:
     void showPrev();
