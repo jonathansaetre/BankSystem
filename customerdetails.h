@@ -25,6 +25,8 @@ private slots:
     void on_buttonCancel_clicked();
     void on_buttonSave_clicked();
     void on_buttonSave_New_clicked();
+    void on_accountButton_clicked();
+     void showCustDetails();
 
 private:
     Ui::CustomerDetails *ui;

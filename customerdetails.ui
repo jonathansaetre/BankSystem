@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>750</width>
-    <height>800</height>
+    <height>550</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>750</width>
-    <height>800</height>
+    <height>550</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -244,14 +244,30 @@
     <string>Save + new</string>
    </property>
   </widget>
-  <widget class="QTreeView" name="accountList">
+  <widget class="QPushButton" name="accountButton">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>440</y>
-     <width>651</width>
-     <height>311</height>
+     <x>180</x>
+     <y>460</y>
+     <width>141</width>
+     <height>31</height>
     </rect>
+   </property>
+   <property name="text">
+    <string>Accounts</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>460</y>
+     <width>151</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Transacions</string>
    </property>
   </widget>
  </widget>

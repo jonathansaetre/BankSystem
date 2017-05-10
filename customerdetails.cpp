@@ -1,5 +1,6 @@
 #include <customerdetails.h>
 #include <ui_customerdetails.h>
+#include <accountlist.h>
 #include <QMessageBox>
 #include <QDataWidgetMapper>
 #include <QSqlQueryModel>
@@ -18,7 +19,6 @@ CustomerDetails::~CustomerDetails() {
 
 void CustomerDetails::newCustomer() {
     ui->labelTitle->setText("New customer");
-    ui->accountList->hide();
 }
 
 void CustomerDetails::editCustomer(QSqlQueryModel *model, int index) {
@@ -30,7 +30,7 @@ void CustomerDetails::editCustomer(QSqlQueryModel *model, int index) {
     ui->phoneBox->setText(model->record(index).value(C::DB_CUSTOMER_ADDRESS).toString());
     ui->addressBox->setText(model->record(index).value(C::DB_CUSTOMER_PHONE).toString());
     ui->emailBox->setText(model->record(index).value(C::DB_CUSTOMER_EMAIL).toString());
-    ui->accountList->setModel(DbManager::getInstance()->fetchAccountList(ui->ssnBox->text()));
+
 
 }
 
@@ -77,4 +77,18 @@ void CustomerDetails::on_buttonSave_New_clicked() {
     save(false);
 }
 
+
+
+void CustomerDetails::on_accountButton_clicked()
+{
+    hide();
+    AccountList *accountlist = new AccountList();
+    accountlist->accounts(DbManager::getInstance()->fetchAccountList(ui->ssnBox->text()));
+    QObject::connect(accountlist, SIGNAL(showPrev()), SLOT(showCustDetails()));
+    accountlist->show();
+}
+
+void CustomerDetails::showCustDetails() {
+    show();
+}
 
