@@ -17,9 +17,9 @@ public:
     ~AccountCreate();
 
 private slots:
-    void on_closeButton_clicked();
     void on_comboAccount_currentIndexChanged();
-    void on_addButton_clicked();
+    void on_saveButton_clicked();
+    void on_closeButton_clicked();
 
 signals:
     void showPrev();

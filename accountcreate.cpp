@@ -18,10 +18,6 @@ AccountCreate::~AccountCreate() {
     delete ui;
 }
 
-void AccountCreate::on_closeButton_clicked() {
-    close();
-    emit showPrev();
-}
 
 
 
@@ -31,7 +27,7 @@ void AccountCreate::on_comboAccount_currentIndexChanged() {
     ui->nameBox->setText(name);
 }
 
-void AccountCreate::on_addButton_clicked() {
+void AccountCreate::on_saveButton_clicked() {
     Account ac;
     ac.customerID = ui->comboAccount->currentText();
     ac.accountnr = ui->accounNrBox->text();
@@ -53,4 +49,10 @@ void AccountCreate::on_addButton_clicked() {
     ui->accountNameBox->setText("");
     ui->balanceBox->setText("");
     ui->dateBox->setText("");
+}
+
+void AccountCreate::on_closeButton_clicked()
+{
+    close();
+    emit showPrev();
 }
