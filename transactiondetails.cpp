@@ -41,34 +41,33 @@ void TransactionDetails::on_buttonBack_clicked() {
 }
 
 void TransactionDetails::on_buttonSave_clicked() {
-    bool success;
-    if(id.isEmpty()) success = DbManager::getInstance()->addCustomer(getRecord());
-    else success = DbManager::getInstance()->updateCustomer(getRecord());
-    if(success) {
-        if(closeWindow) {
-            close();
-            emit showPrev();
-        } else {
-            foreach(QLineEdit *widget, this->findChildren<QLineEdit*>()) {
-                widget->clear();
-            }
-        }
-    } else {
-        QString action = id.isEmpty() ? "Add" : "Update";
-        QMessageBox::information(this, action + " ", action + " customer failed");
-    }
+//    bool success;
+//    if(id.isEmpty()) success = DbManager::getInstance()->addCustomer(getRecord());
+//    else success = DbManager::getInstance()->updateCustomer(getRecord());
+//    if(success) {
+//        if(closeWindow) {
+//            close();
+//            emit showPrev();
+//        } else {
+//            foreach(QLineEdit *widget, this->findChildren<QLineEdit*>()) {
+//                widget->clear();
+//            }
+//        }
+//    } else {
+//        QString action = id.isEmpty() ? "Add" : "Update";
+//        QMessageBox::information(this, action + " ", action + " customer failed");
+//    }
 }
 
-Transaction TransactionDetails::getRecord() {
-    Transaction t;
-    t.id = id;
-    t.name = ui->nameBox->text();
-    t.ssn = ui->ssnBox->text();
-    t.phone = ui->phoneBox->text();
-    t.address = ui->addressBox->text();
-    t.email = ui->emailBox->text();
-    return t;
-}
+//Transaction TransactionDetails::getRecord() {
+//    Transaction t;
+//    t.fromAccountnr = ui->nameBox->text();
+//    t.ssn = ui->ssnBox->text();
+//    t.phone = ui->phoneBox->text();
+//    t.address = ui->addressBox->text();
+//    t.email = ui->emailBox->text();
+//    return t;
+//}
 
 void TransactionDetails::on_leToCust_editingFinished() {
     QModelIndex index = ui->leToCust->completer()->currentIndex();

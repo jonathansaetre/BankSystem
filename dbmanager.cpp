@@ -105,8 +105,8 @@ bool DbManager::addTransaction(const Transaction r) {
     db.transaction();
     QSqlQuery query(db);
     query.prepare("INSERT INTO Transaction (fromid, toid, amount, date) VALUES (:fromid, :toid, :amount, :date)");
-    query.bindValue(":fromid", r.fromID);
-    query.bindValue(":toid", r.toID);
+    query.bindValue(":fromid", r.fromAccountID);
+    query.bindValue(":toid", r.toAccountID);
     query.bindValue(":amount", r.amount);
     query.bindValue(":date", r.date);
     bool success = query.exec();
@@ -180,8 +180,8 @@ bool DbManager::updateTransaction(const Transaction r) {
     QSqlQuery query(db);
     query.prepare("UPDATE Transaction SET fromid=:fromid, toid=:toid, amount=:amount, date=:date WHERE id=:id");
     query.bindValue(":id", r.id);
-    query.bindValue(":fromid", r.fromID);
-    query.bindValue(":toid", r.toID);
+    query.bindValue(":fromid", r.fromAccountID);
+    query.bindValue(":toid", r.toAccountID);
     query.bindValue(":amount", r.amount);
     query.bindValue(":date", r.date);
     bool success = query.exec();
@@ -308,8 +308,8 @@ Transaction DbManager::fetchTransaction(const Transaction r) {
         if(query.first()) {
             QSqlRecord record = query.record();
             getR.id = record.value(Util::DB_TRANSACTION_ID).toString();
-            getR.fromID = record.value(Util::DB_TRANSACTION_FROMID).toString();
-            getR.toID = query.value(Util::DB_TRANSACTION_TOID).toString();
+            getR.fromAccountID = record.value(Util::DB_TRANSACTION_FROMID).toString();
+            getR.toAccountID = query.value(Util::DB_TRANSACTION_TOID).toString();
             getR.amount = query.value(Util::DB_TRANSACTION_AMOUNT).toString();
             getR.date = query.value(Util::DB_TRANSACTION_DATE).toString();
         }

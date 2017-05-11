@@ -92,3 +92,8 @@ void CustomerDetails::showCustDetails() {
     show();
 }
 
+
+void CustomerDetails::on_pushButton_clicked()
+{
+
+}

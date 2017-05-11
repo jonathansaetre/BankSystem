@@ -28,6 +28,8 @@ private slots:
     void on_accountButton_clicked();
      void showCustDetails();
 
+     void on_pushButton_clicked();
+
 private:
     Ui::CustomerDetails *ui;
     QString id;

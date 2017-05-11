@@ -21,9 +21,9 @@ struct Account {
 struct Transaction {
     QString id;
     QString fromAccountID;
-    QString fromAccountnr;
+//    QString fromAccountnr;
     QString toAccountID;
-    QString toAccountnr;
+//    QString toAccountnr;
     QString amount;
     QString date;
 };
