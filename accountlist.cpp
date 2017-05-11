@@ -34,7 +34,7 @@ void AccountList::on_cancelButton_clicked()
 void AccountList::on_Newaccount_clicked()
 {
     hide();
-    AccountCreate *createaccount = new AccountCreate();
+    AccountDetails *createaccount = new AccountDetails();
     QObject::connect(createaccount, SIGNAL(showPrev()), SLOT(show()));
     createaccount->show();
 }

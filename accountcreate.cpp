@@ -5,7 +5,7 @@
 #include <QSqlRecord>
 
 
-AccountCreate::AccountCreate(QWidget *parent) : QDialog(parent), ui(new Ui::accountcreate) {
+AccountDetails::AccountDetails(QWidget *parent) : QDialog(parent), ui(new Ui::accountcreate) {
     ui->setupUi(this);
     setFocus();
     model = DbManager::getInstance()->fetchCustomerList();
@@ -13,20 +13,20 @@ AccountCreate::AccountCreate(QWidget *parent) : QDialog(parent), ui(new Ui::acco
     ui->comboAccount->setModelColumn(Util::DB_CUSTOMER_SSN);
 }
 
-AccountCreate::~AccountCreate() {
+AccountDetails::~AccountDetails() {
     delete ui;
 }
 
 
 
 
-void AccountCreate::on_comboAccount_currentIndexChanged() {
+void AccountDetails::on_comboAccount_currentIndexChanged() {
     int index = ui->comboAccount->currentIndex();
     QString name = model->record(index).value(Util::DB_CUSTOMER_NAME).toString();
     ui->nameBox->setText(name);
 }
 
-void AccountCreate::on_saveButton_clicked() {
+void AccountDetails::on_saveButton_clicked() {
     Account ac;
     ac.customerID = ui->comboAccount->currentText();
     ac.accountnr = ui->accounNrBox->text();
@@ -50,8 +50,9 @@ void AccountCreate::on_saveButton_clicked() {
     ui->dateBox->setText("");
 }
 
-void AccountCreate::on_closeButton_clicked()
+void AccountDetails::on_closeButton_clicked()
 {
     close();
     emit showPrev();
 }
+

@@ -97,17 +97,17 @@
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>110</y>
-     <width>861</width>
-     <height>61</height>
+     <x>40</x>
+     <y>129</y>
+     <width>811</width>
+     <height>71</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QPushButton" name="buttonBack">
+     <widget class="QPushButton" name="buttonNewCustomer">
       <property name="text">
-       <string>Back</string>
+       <string>New customer</string>
       </property>
      </widget>
     </item>
@@ -119,9 +119,9 @@
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="buttonNewCustomer">
+     <widget class="QPushButton" name="buttonBack">
       <property name="text">
-       <string>New customer</string>
+       <string>Back</string>
       </property>
      </widget>
     </item>

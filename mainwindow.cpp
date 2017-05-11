@@ -48,7 +48,7 @@ void MainWindow::on_actionDelete_triggered() {
 
 void MainWindow::on_actionNew_2_triggered() {
     hide();
-    AccountCreate *createaccount = new AccountCreate();
+    AccountDetails *createaccount = new AccountDetails();
     QObject::connect(createaccount, SIGNAL(showPrev()), SLOT(show()));
     createaccount->show();
 }

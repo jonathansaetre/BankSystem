@@ -8,13 +8,13 @@ namespace Ui {
 class accountcreate;
 }
 
-class AccountCreate : public QDialog
+class AccountDetails : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit AccountCreate(QWidget *parent = 0);
-    ~AccountCreate();
+    explicit AccountDetails(QWidget *parent = 0);
+    ~AccountDetails();
 
 private slots:
     void on_comboAccount_currentIndexChanged();
