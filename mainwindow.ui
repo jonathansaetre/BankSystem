@@ -103,7 +103,6 @@
      <string>Customer</string>
     </property>
     <addaction name="actionNew"/>
-    <addaction name="actionUpdate"/>
     <addaction name="actionDelete"/>
    </widget>
    <widget class="QMenu" name="menuAccount">
@@ -140,11 +139,6 @@
   <action name="actionNew">
    <property name="text">
     <string>New Customer</string>
-   </property>
-  </action>
-  <action name="actionUpdate">
-   <property name="text">
-    <string>Update Customer</string>
    </property>
   </action>
   <action name="actionDelete">
