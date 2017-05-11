@@ -4,7 +4,6 @@
 #include <QMessageBox>
 #include <QDataWidgetMapper>
 #include <QSqlQueryModel>
-#include <c.cpp>
 #include <QSqlRecord>
 #include <QDebug>
 
@@ -24,12 +23,12 @@ void CustomerDetails::newCustomer() {
 void CustomerDetails::editCustomer(QSqlQueryModel *model, int index) {
     ui->labelTitle->setText("Edit customer");
     ui->buttonSave_New->hide();
-    id = model->record(index).value(C::DB_CUSTOMER_ID).toString();
-    ui->nameBox->setText(model->record(index).value(C::DB_CUSTOMER_NAME).toString());
-    ui->ssnBox->setText(model->record(index).value(C::DB_CUSTOMER_SSN).toString());
-    ui->phoneBox->setText(model->record(index).value(C::DB_CUSTOMER_ADDRESS).toString());
-    ui->addressBox->setText(model->record(index).value(C::DB_CUSTOMER_PHONE).toString());
-    ui->emailBox->setText(model->record(index).value(C::DB_CUSTOMER_EMAIL).toString());
+    id = model->record(index).value(Util::DB_CUSTOMER_ID).toString();
+    ui->nameBox->setText(model->record(index).value(Util::DB_CUSTOMER_NAME).toString());
+    ui->ssnBox->setText(model->record(index).value(Util::DB_CUSTOMER_SSN).toString());
+    ui->phoneBox->setText(model->record(index).value(Util::DB_CUSTOMER_ADDRESS).toString());
+    ui->addressBox->setText(model->record(index).value(Util::DB_CUSTOMER_PHONE).toString());
+    ui->emailBox->setText(model->record(index).value(Util::DB_CUSTOMER_EMAIL).toString());
 
 
 }

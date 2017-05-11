@@ -2,7 +2,6 @@
 #include "ui_accountlist.h"
 #include <accountcreate.h>
 #include <QSqlRecord>
-#include <c.cpp>
 
 AccountList::AccountList(QWidget *parent) :
     QDialog(parent),

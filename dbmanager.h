@@ -2,7 +2,7 @@
 #define DBMANAGER_H
 #include <QString>
 #include <QSqlDatabase>
-#include <objects.cpp>
+#include <util.cpp>
 #include <QSqlQueryModel>
 
 class DbManager {

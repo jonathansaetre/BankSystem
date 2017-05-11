@@ -1,6 +1,6 @@
 #ifndef ACCOUNTDELETE_H
 #define ACCOUNTDELETE_H
-
+#include <dbmanager.h>
 #include <QDialog>
 
 namespace Ui {

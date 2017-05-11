@@ -6,7 +6,6 @@
 #include <QSqlRecord>
 #include <QFileInfo>
 #include <QMessageBox>
-#include <c.cpp>
 
 DbManager* DbManager::instance = NULL;
 DbManager* DbManager::getInstance() {
@@ -261,12 +260,12 @@ Customer DbManager::fetchCustomer(const Customer r) {
     if(query.exec()) {
         if(!query.next() && !query.first()) return getC;
         QSqlRecord record = query.record();
-        getC.id = record.value(C::DB_CUSTOMER_ID).toString();
-        getC.name = record.value(C::DB_CUSTOMER_NAME).toString();
-        getC.ssn = query.value(C::DB_CUSTOMER_SSN).toString();
-        getC.phone = query.value(C::DB_CUSTOMER_PHONE).toString();
-        getC.address = query.value(C::DB_CUSTOMER_ADDRESS).toString();
-        getC.email = query.value(C::DB_CUSTOMER_EMAIL).toString();
+        getC.id = record.value(Util::DB_CUSTOMER_ID).toString();
+        getC.name = record.value(Util::DB_CUSTOMER_NAME).toString();
+        getC.ssn = query.value(Util::DB_CUSTOMER_SSN).toString();
+        getC.phone = query.value(Util::DB_CUSTOMER_PHONE).toString();
+        getC.address = query.value(Util::DB_CUSTOMER_ADDRESS).toString();
+        getC.email = query.value(Util::DB_CUSTOMER_EMAIL).toString();
     } else {
         qDebug() << "fetchCustomer error: " << query.lastError();
         qDebug() << query.executedQuery();
@@ -284,12 +283,12 @@ Account DbManager::fetchAccount(const Account r) {
     if(query.exec()) {
         if(query.first()) {
             QSqlRecord record = query.record();
-            getR.id = record.value(C::DB_ACCOUNT_ID).toString();
-            getR.name = record.value(C::DB_ACCOUNT_NAME).toString();
-            getR.customerID = query.value(C::DB_ACCOUNT_CUSTOMERID).toString();
-            getR.balance = query.value(C::DB_ACCOUNT_BALANCE).toString();
-            getR.accountnr = query.value(C::DB_ACCOUNT_ACCOUNTNR).toString();
-            getR.date = query.value(C::DB_ACCOUNT_DATE).toString();
+            getR.id = record.value(Util::DB_ACCOUNT_ID).toString();
+            getR.name = record.value(Util::DB_ACCOUNT_NAME).toString();
+            getR.customerID = query.value(Util::DB_ACCOUNT_CUSTOMERID).toString();
+            getR.balance = query.value(Util::DB_ACCOUNT_BALANCE).toString();
+            getR.accountnr = query.value(Util::DB_ACCOUNT_ACCOUNTNR).toString();
+            getR.date = query.value(Util::DB_ACCOUNT_DATE).toString();
         }
     } else {
         qDebug() << "fetchAccount error: " << query.lastError();
@@ -308,11 +307,11 @@ Transaction DbManager::fetchTransaction(const Transaction r) {
     if(query.exec()) {
         if(query.first()) {
             QSqlRecord record = query.record();
-            getR.id = record.value(C::DB_TRANSACTION_ID).toString();
-            getR.fromID = record.value(C::DB_TRANSACTION_FROMID).toString();
-            getR.toID = query.value(C::DB_TRANSACTION_TOID).toString();
-            getR.amount = query.value(C::DB_TRANSACTION_AMOUNT).toString();
-            getR.date = query.value(C::DB_TRANSACTION_DATE).toString();
+            getR.id = record.value(Util::DB_TRANSACTION_ID).toString();
+            getR.fromID = record.value(Util::DB_TRANSACTION_FROMID).toString();
+            getR.toID = query.value(Util::DB_TRANSACTION_TOID).toString();
+            getR.amount = query.value(Util::DB_TRANSACTION_AMOUNT).toString();
+            getR.date = query.value(Util::DB_TRANSACTION_DATE).toString();
         }
     } else {
         qDebug() << "fetchTransaction error: " << query.lastError();

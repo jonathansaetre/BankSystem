@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QSqlQueryModel>
 #include <QSqlQuery>
+#include <dbmanager.h>
 
 namespace Ui {
 class CustomerList;

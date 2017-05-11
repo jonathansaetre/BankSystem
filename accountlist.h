@@ -1,7 +1,7 @@
 #ifndef ACCOUNTLIST_H
 #define ACCOUNTLIST_H
 #include <QSqlQueryModel>
-
+#include <dbmanager.h>
 #include <QDialog>
 
 namespace Ui {

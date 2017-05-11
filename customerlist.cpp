@@ -1,7 +1,6 @@
 #include <customerlist.h>
 #include <ui_customerlist.h>
 #include <customerdetails.h>
-#include <dbmanager.h>
 
 
 CustomerList::CustomerList(QWidget *parent) : QWidget(parent), ui(new Ui::CustomerList) {

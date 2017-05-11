@@ -30,12 +30,11 @@ SOURCES += main.cpp\
     transactionlist.cpp \
     transactiondetails.cpp \
     dbmanager.cpp \
-    objects.cpp \
     accountcreate.cpp \
     deletecustomer.cpp \
     customerdetails.cpp \
-    c.cpp \
-    accountlist.cpp
+    accountlist.cpp \
+    util.cpp
 
 HEADERS  += mainwindow.h \
     customerlist.h \

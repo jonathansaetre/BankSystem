@@ -20,6 +20,10 @@ private slots:
     void on_buttonLagre_clicked();
     void on_buttonBack_clicked();
 
+    void on_buttonSave_clicked();
+
+    void on_leToCust_editingFinished();
+
 signals:
     void showPrev();
 
