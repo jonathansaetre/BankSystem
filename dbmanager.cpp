@@ -43,6 +43,7 @@ DbManager::DbManager() {
 }
 
 bool DbManager::addCustomer(const Customer r) {
+    bool exists = existsQuery("SELECT id FROM Customer where id = '" + r.id + "'");
     db.transaction();
     QSqlQuery query(db);
     query.prepare("INSERT INTO Customer (name, ssn, phone, address, email) VALUES (:name, :ssn, :phone, :address, :email)");
@@ -52,6 +53,7 @@ bool DbManager::addCustomer(const Customer r) {
     query.bindValue(":address", r.address);
     query.bindValue(":email", r.email);
     bool success = query.exec();
+    db.commit();
     if(success) {
         Customer r2 = r;
         r2.id = query.lastInsertId().toString();
@@ -60,11 +62,11 @@ bool DbManager::addCustomer(const Customer r) {
         qDebug() << query.executedQuery();
         qDebug() << "Error addCustomer:  " << query.lastError();
     }
-    db.commit();
     return success;
 }
 
 bool DbManager::addCustomerFST(const Customer r) {
+    db.transaction();
     QSqlQuery query(db);
     query.prepare("INSERT INTO CustomerFTS (id, name, ssn, phone, address, email) VALUES (:id, :name, :ssn, :phone, :address, :email)");
     query.bindValue(":id", r.id);
@@ -78,6 +80,7 @@ bool DbManager::addCustomerFST(const Customer r) {
         qDebug() << query.executedQuery();
         qDebug() << "Error addCustomerFST:  " << query.lastError();
     }
+    db.commit();
     return success;
 }
 
@@ -127,20 +130,20 @@ bool DbManager::updateCustomer(const Customer r) {
     query.bindValue(":address", r.address);
     query.bindValue(":email", r.email);
     bool success = query.exec();
+    db.commit();
     if(success) {
         updateCustomerFST(r);
     } else {
         qDebug() << "Error updateCustomer: " << query.lastError();
         qDebug() << query.executedQuery();
     }
-    db.commit();
     return success;
 }
 
 bool DbManager::updateCustomerFST(const Customer r) {
     db.transaction();
     QSqlQuery query(db);
-    query.prepare("UPDATE CustomerFTS SET name=:name, ssn=:ssn, phone=:phone, address=:address, email=:email WHERE id=:id");
+    query.prepare("UPDATE CustomerFTS SET name=:name, ssn=:ssn, phone=:phone, address=:address, email=:email WHERE id MATCH :id");
     query.bindValue(":id", r.id);
     query.bindValue(":name", r.name);
     query.bindValue(":ssn", r.ssn);
@@ -210,7 +213,7 @@ bool DbManager::deleteCustomer(const Customer r) {
 bool DbManager::deleteCustomerFST(const Customer r) {
     db.transaction();
     QSqlQuery query(db);
-    query.prepare("DELETE from CustomerFTS where id=:id");
+    query.prepare("DELETE from CustomerFTS where id MATCH :id");
     query.bindValue(":id", r.id);
     bool success = query.exec();
     if(!success) {

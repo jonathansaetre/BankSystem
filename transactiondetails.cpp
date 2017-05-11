@@ -10,6 +10,11 @@ TransactionDetails::~TransactionDetails() {
     delete ui;
 }
 
+void TransactionDetails::init(Customer customer) {
+    this->customer = customer;
+
+}
+
 void TransactionDetails::on_buttonLagre_clicked() {
 
 }

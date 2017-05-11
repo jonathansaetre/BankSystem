@@ -1,6 +1,7 @@
 #ifndef TRANSACTIONDETAILS_H
 #define TRANSACTIONDETAILS_H
 #include <QWidget>
+#include <dbmanager.h>
 
 namespace Ui {
 class TransactionDetails;
@@ -13,6 +14,7 @@ class TransactionDetails : public QWidget
 public:
     explicit TransactionDetails(QWidget *parent = 0);
     ~TransactionDetails();
+    void init(Customer customer);
 
 private slots:
     void on_buttonLagre_clicked();
@@ -23,6 +25,7 @@ signals:
 
 private:
     Ui::TransactionDetails *ui;
+    Customer customer;
 };
 
 #endif // TRANSACTIONDETAILS_H
