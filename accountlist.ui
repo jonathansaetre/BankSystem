@@ -63,7 +63,7 @@
        <property name="minimumSize">
         <size>
          <width>500</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -86,32 +86,19 @@
     </layout>
    </item>
    <item>
-    <widget class="QTreeView" name="accountList">
-     <property name="font">
-      <font>
-       <family>Times New Roman</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color:blue</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QPushButton" name="Newaccount">
        <property name="minimumSize">
         <size>
          <width>300</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>300</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="font">
@@ -130,6 +117,36 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="placeholderText">
+        <string>Accountname</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTreeView" name="accountList">
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color:blue</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="minimumSize">
