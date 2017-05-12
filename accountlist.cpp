@@ -25,16 +25,16 @@ void AccountList::customerName(QString name){
     ui->customerBox->setText(name);
 }
 
-void AccountList::on_cancelButton_clicked()
-{
-    close();
-    emit showPrev();
-}
-
 void AccountList::on_Newaccount_clicked()
 {
     hide();
     AccountDetails *createaccount = new AccountDetails();
     QObject::connect(createaccount, SIGNAL(showPrev()), SLOT(show()));
     createaccount->show();
+}
+
+void AccountList::on_backButton_clicked()
+{
+    close();
+    emit showPrev();
 }

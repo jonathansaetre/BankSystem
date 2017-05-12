@@ -10,6 +10,8 @@
 CustomerDetails::CustomerDetails(QWidget *parent) : QWidget(parent), ui(new Ui::CustomerDetails) {
     ui->setupUi(this);
     setFocus();
+    ui->accountButton->hide();
+    ui->transactionButton->hide();
 }
 
 CustomerDetails::~CustomerDetails() {
@@ -18,11 +20,11 @@ CustomerDetails::~CustomerDetails() {
 
 void CustomerDetails::newCustomer() {
     ui->labelTitle->setText("New customer");
+
 }
 
 void CustomerDetails::editCustomer(QSqlQueryModel *model, int index) {
     ui->labelTitle->setText("Edit customer");
-    ui->buttonSave_New->hide();
     id = model->record(index).value(Util::DB_CUSTOMER_ID).toString();
     ui->nameBox->setText(model->record(index).value(Util::DB_CUSTOMER_NAME).toString());
     ui->ssnBox->setText(model->record(index).value(Util::DB_CUSTOMER_SSN).toString());
@@ -30,7 +32,8 @@ void CustomerDetails::editCustomer(QSqlQueryModel *model, int index) {
     ui->addressBox->setText(model->record(index).value(Util::DB_CUSTOMER_PHONE).toString());
     ui->emailBox->setText(model->record(index).value(Util::DB_CUSTOMER_EMAIL).toString());
 
-
+    ui->accountButton->show();
+    ui->transactionButton->show();
 }
 
 void CustomerDetails::save(bool closeWindow) {

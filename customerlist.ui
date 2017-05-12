@@ -69,19 +69,19 @@
        <property name="minimumSize">
         <size>
          <width>250</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>250</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>Times New Roman</family>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -90,37 +90,7 @@
         <string notr="true">color:blue</string>
        </property>
        <property name="text">
-        <string>New customer</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="minimumSize">
-        <size>
-         <width>250</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>250</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Times New Roman</family>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:blue</string>
-       </property>
-       <property name="text">
-        <string>Delete</string>
+        <string>New </string>
        </property>
       </widget>
      </item>
@@ -129,19 +99,19 @@
        <property name="minimumSize">
         <size>
          <width>250</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>250</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>Times New Roman</family>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -163,19 +133,19 @@
        <property name="minimumSize">
         <size>
          <width>100</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>100</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>Times New Roman</family>
-         <pointsize>14</pointsize>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -193,13 +163,13 @@
        <property name="minimumSize">
         <size>
          <width>400</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>400</width>
-         <height>50</height>
+         <height>30</height>
         </size>
        </property>
        <property name="font">
@@ -217,6 +187,18 @@
    </item>
    <item>
     <widget class="QTreeView" name="custList">
+     <property name="minimumSize">
+      <size>
+       <width>850</width>
+       <height>400</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>850</width>
+       <height>400</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <family>Times New Roman</family>

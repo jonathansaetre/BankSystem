@@ -22,10 +22,10 @@ signals:
     void showPrev();
 
 private slots:
-    void on_cancelButton_clicked();
-
 
     void on_Newaccount_clicked();
+
+    void on_backButton_clicked();
 
 private:
     Ui::AccountList *ui;
