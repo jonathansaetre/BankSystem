@@ -7,6 +7,13 @@ accountdelete::accountdelete(QWidget *parent) :
 {
     ui->setupUi(this);
     setFocus();
+
+    ui->customercomboBox->setModel(DbManager::getInstance()->fetchCustomerList());
+    ui->customercomboBox->setModelColumn(Util::DB_CUSTOMER_SSN);
+
+   // ui->customercomboBox->setModel( DbManager::getInstance()->fetchAccountList(ui->customercomboBox->currentText()));
+    //ui->customercomboBox->setModelColumn(Util::DB_ACCOUNT_ACCOUNTNR);
+
 }
 
 accountdelete::~accountdelete()
