@@ -5,6 +5,7 @@
 #include <customerdetails.h>
 #include <deletecustomer.h>
 #include <accountcreate.h>
+#include <transactiondetails.h>
 #include <accountdelete.h>
 #include <dbmanager.h>
 
@@ -64,4 +65,12 @@ void MainWindow::on_actionDelete_2_triggered()
     accountdelete *accountdel = new accountdelete();
     QObject::connect(accountdel, SIGNAL(showPrev()), SLOT(show()));
     accountdel->show();
+}
+
+void MainWindow::on_actionNew_Transaction_triggered()
+{
+    hide();
+    TransactionDetails *transactiondetail = new TransactionDetails();
+    QObject::connect(transactiondetail, SIGNAL(showPrev()), SLOT(show()));
+    transactiondetail->show();
 }

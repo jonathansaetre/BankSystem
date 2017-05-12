@@ -26,6 +26,8 @@ private slots:
 
     void on_actionDelete_2_triggered();
 
+    void on_actionNew_Transaction_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
