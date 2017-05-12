@@ -30,7 +30,6 @@ SOURCES += main.cpp\
     transactionlist.cpp \
     transactiondetails.cpp \
     dbmanager.cpp \
-    objects.cpp \
     deletecustomer.cpp \
     accountlist.cpp \
     accountdelete.cpp \
