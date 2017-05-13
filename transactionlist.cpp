@@ -25,7 +25,7 @@ void TransactionList::on_buttonNewTransaction_clicked() {
 }
 
 void TransactionList::showTransactionList() {
-    ui->listView->setModel(DbManager::getInstance()->fetchTransactionList(customer.id));
+    if(customer.id.isEmpty()) ui->listView->setModel(DbManager::getInstance()->fetchTransactionList(""));
     show();
 }
 

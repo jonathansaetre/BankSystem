@@ -16,7 +16,7 @@ public:
     explicit CustomerDetails(QWidget *parent = 0);
     ~CustomerDetails();
     void newCustomer();
-    void editCustomer(QSqlQueryModel *model, int index);
+    void editCustomer(Customer customer);
 
 signals:
     void showPrev();
@@ -24,15 +24,13 @@ signals:
 private slots:
     void on_buttonCancel_clicked();
     void on_buttonSave_clicked();
-    void on_buttonSave_New_clicked();
     void on_accountButton_clicked();
-     void showCustDetails();
-
-     void on_pushButton_clicked();
+    void showCustDetails();
+    void on_transactionButton_clicked();
 
 private:
     Ui::CustomerDetails *ui;
-    QString id;
+    Customer customer;
     Customer getRecord();
     void save(bool close);
 };

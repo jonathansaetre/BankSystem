@@ -6,12 +6,11 @@
 #include <QSqlQueryModel>
 #include <QSqlRecord>
 #include <QDebug>
+#include <transactionlist.h>
 
 CustomerDetails::CustomerDetails(QWidget *parent) : QWidget(parent), ui(new Ui::CustomerDetails) {
     ui->setupUi(this);
     setFocus();
-    ui->accountButton->hide();
-    ui->transactionButton->hide();
 }
 
 CustomerDetails::~CustomerDetails() {
@@ -20,44 +19,40 @@ CustomerDetails::~CustomerDetails() {
 
 void CustomerDetails::newCustomer() {
     ui->labelTitle->setText("New customer");
-
+    ui->accountButton->hide();
+    ui->transactionButton->hide();
 }
 
-void CustomerDetails::editCustomer(QSqlQueryModel *model, int index) {
+void CustomerDetails::editCustomer(Customer customer) {
     ui->labelTitle->setText("Edit customer");
-    id = model->record(index).value(Util::DB_CUSTOMER_ID).toString();
-    ui->nameBox->setText(model->record(index).value(Util::DB_CUSTOMER_NAME).toString());
-    ui->ssnBox->setText(model->record(index).value(Util::DB_CUSTOMER_SSN).toString());
-    ui->phoneBox->setText(model->record(index).value(Util::DB_CUSTOMER_ADDRESS).toString());
-    ui->addressBox->setText(model->record(index).value(Util::DB_CUSTOMER_PHONE).toString());
-    ui->emailBox->setText(model->record(index).value(Util::DB_CUSTOMER_EMAIL).toString());
-
-    ui->accountButton->show();
-    ui->transactionButton->show();
+    this->customer = customer;
+    ui->nameBox->setText(customer.name);
+    ui->ssnBox->setText(customer.ssn);
+    ui->phoneBox->setText(customer.phone);
+    ui->addressBox->setText(customer.address);
+    ui->emailBox->setText(customer.email);
 }
 
 void CustomerDetails::save(bool closeWindow) {
     bool success;
-    if(id.isEmpty()) success = DbManager::getInstance()->addCustomer(getRecord());
-    else success = DbManager::getInstance()->updateCustomer(getRecord());
-    if(success) {
-        if(closeWindow) {
-            close();
-            emit showPrev();
-        } else {
-            foreach(QLineEdit *widget, this->findChildren<QLineEdit*>()) {
-                widget->clear();
-            }
+    if(customer.id.isEmpty()) {
+        Customer cust = DbManager::getInstance()->addCustomer(getRecord());
+        if(!cust.id.isEmpty()){
+            success = true;
+            customer = cust;
+            ui->accountButton->show();
+            ui->transactionButton->show();
         }
-    } else {
-        QString action = id.isEmpty() ? "Add" : "Update";
+    } else success = DbManager::getInstance()->updateCustomer(getRecord());
+    if(!success) {
+        QString action = customer.id.isEmpty() ? "Add" : "Update";
         QMessageBox::information(this, action + " ", action + " customer failed");
     }
 }
 
 Customer CustomerDetails::getRecord() {
     Customer c;
-    c.id = id;
+    c.id = customer.id;
     c.name = ui->nameBox->text();
     c.ssn = ui->ssnBox->text();
     c.phone = ui->phoneBox->text();
@@ -75,18 +70,11 @@ void CustomerDetails::on_buttonSave_clicked() {
     save(true);
 }
 
-void CustomerDetails::on_buttonSave_New_clicked() {
-    save(false);
-}
-
-
-
 void CustomerDetails::on_accountButton_clicked()
-{
+{    
     hide();
     AccountList *accountlist = new AccountList();
-    accountlist->accounts(DbManager::getInstance()->fetchAccountList(ui->ssnBox->text()));
-    accountlist->customerName(ui->nameBox->text());
+    accountlist->init(customer);
     QObject::connect(accountlist, SIGNAL(showPrev()), SLOT(showCustDetails()));
     accountlist->show();
 }
@@ -95,8 +83,10 @@ void CustomerDetails::showCustDetails() {
     show();
 }
 
-
-void CustomerDetails::on_pushButton_clicked()
-{
-
+void CustomerDetails::on_transactionButton_clicked() {
+    hide();
+    TransactionList *transactionlist = new TransactionList();
+    transactionlist->init(customer);
+    QObject::connect(transactionlist, SIGNAL(showPrev()), SLOT(show()));
+    transactionlist->show();
 }

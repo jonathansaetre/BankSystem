@@ -37,7 +37,7 @@ void CustomerList::textSeachEditChanged(QString text) {
 void CustomerList::custListDoubleClicked(QModelIndex index) {
     hide();
     CustomerDetails *custDetail = new CustomerDetails();
-    custDetail->editCustomer(model, index.row());
+    custDetail->editCustomer(Util::getCustomer(model, index.row()));
     QObject::connect(custDetail, SIGNAL(showPrev()), SLOT(showCustList()));
     custDetail->show();
 }

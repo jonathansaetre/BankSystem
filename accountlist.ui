@@ -154,7 +154,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="leAccName">
        <property name="minimumSize">
         <size>
          <width>0</width>

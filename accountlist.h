@@ -15,8 +15,7 @@ class AccountList : public QDialog
 public:
     explicit AccountList(QWidget *parent = 0);
     ~AccountList();
-    void accounts(QSqlQueryModel *model);
-     void customerName(QString name);
+    void init(Customer customer);
 
 signals:
     void showPrev();
@@ -29,6 +28,7 @@ private slots:
 
 private:
     Ui::AccountList *ui;
+    Customer customer;
 };
 
 #endif // ACCOUNTLIST_H

@@ -10,7 +10,7 @@ AccountDetails::AccountDetails(QWidget *parent) : QDialog(parent), ui(new Ui::ac
     setFocus();
     model = DbManager::getInstance()->fetchCustomerList();
     ui->comboAccount->setModel(model);
-    ui->comboAccount->setModelColumn(Util::DB_CUSTOMER_SSN);
+    ui->comboAccount->setModelColumn(DB_CUSTOMER_SSN);
 }
 
 AccountDetails::~AccountDetails() {
@@ -22,7 +22,7 @@ AccountDetails::~AccountDetails() {
 
 void AccountDetails::on_comboAccount_currentIndexChanged() {
     int index = ui->comboAccount->currentIndex();
-    QString name = model->record(index).value(Util::DB_CUSTOMER_NAME).toString();
+    QString name = model->record(index).value(DB_CUSTOMER_NAME).toString();
     ui->nameBox->setText(name);
 }
 
@@ -31,8 +31,7 @@ void AccountDetails::on_saveButton_clicked() {
     ac.customerID = ui->comboAccount->currentText();
     ac.accountnr = ui->accounNrBox->text();
     ac.name = ui->accountNameBox->text();
-    ac.balance = ui->balanceBox->text();
-    ac.date = ui->dateBox->text();
+    ac.balance = ui->balanceBox->text().toInt();
 
     if(DbManager::getInstance()->addAccount(ac)) {
         QMessageBox::information(this, "Add Account", "Added account successfully");
@@ -43,7 +42,7 @@ void AccountDetails::on_saveButton_clicked() {
     //Initialise
     model = DbManager::getInstance()->fetchCustomerList();
     ui->comboAccount->setModel(model);
-    ui->comboAccount->setModelColumn(Util::DB_CUSTOMER_SSN);
+    ui->comboAccount->setModelColumn(DB_CUSTOMER_SSN);
     ui->accounNrBox->setText("");
     ui->accountNameBox->setText("");
     ui->balanceBox->setText("");

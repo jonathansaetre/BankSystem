@@ -2,39 +2,39 @@
 #include "ui_accountlist.h"
 #include <accountcreate.h>
 #include <QSqlRecord>
+#include <QMessageBox>
 
-AccountList::AccountList(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AccountList)
+AccountList::AccountList(QWidget *parent) : QDialog(parent), ui(new Ui::AccountList)
 {
     ui->setupUi(this);
 
 }
 
-AccountList::~AccountList()
-{
+AccountList::~AccountList() {
     delete ui;
 }
 
-void AccountList::accounts(QSqlQueryModel *model) {
-
-    ui->accountList->setModel(model);
+void AccountList::init(Customer customer) {
+    this->customer = customer;
+    ui->accountList->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
+    ui->customerBox->setText(customer.name);
 }
 
-void AccountList::customerName(QString name){
-    ui->customerBox->setText(name);
+void AccountList::on_Newaccount_clicked() {
+    Account account;
+    account.customerID = customer.id;
+    account.name = ui->leAccName->text();
+    if(account.name.isEmpty()) return;
+    bool success = DbManager::getInstance()->addAccount(account);
+    if(success) {
+        ui->accountList->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
+    } else {
+        QString action = customer.id.isEmpty() ? "Add" : "Update";
+        QMessageBox::information(this, action + " ", action + " customer failed");
+    }
 }
 
-void AccountList::on_Newaccount_clicked()
-{
-    hide();
-    AccountDetails *createaccount = new AccountDetails();
-    QObject::connect(createaccount, SIGNAL(showPrev()), SLOT(show()));
-    createaccount->show();
-}
-
-void AccountList::on_backButton_clicked()
-{
+void AccountList::on_backButton_clicked() {
     close();
     emit showPrev();
 }

@@ -10,7 +10,7 @@ public:
     static DbManager* getInstance();
     static void close();
 
-    bool addCustomer(Customer c);
+    Customer addCustomer(Customer c);
     bool addAccount(Account c);
     bool addTransaction(Transaction c);
 
@@ -22,9 +22,9 @@ public:
     bool deleteAccount(Account c);
     bool deleteTransaction(Transaction c);
 
-    Customer fetchCustomer(Customer c);
-    Account fetchAccount(Account c);
-    Transaction fetchTransaction(Transaction c);
+    Customer fetchCustomer(QString id);
+    Account fetchAccount(QString id);
+    Transaction fetchTransaction(QString id);
 
     QSqlQueryModel* fetchCustomerList();
     QSqlQueryModel* fetchAccountList(QString customerID);
@@ -41,6 +41,10 @@ private:
     bool addCustomerFST(Customer r);
     bool updateCustomerFST(Customer r);
     bool deleteCustomerFST(Customer r);
+    bool runQuery(QString queryString);
+    bool executeTransfer(Transaction r);
+    bool existsAccountNr(QString accountNr);
+    QString getAccountnr();
 };
 
 #endif // DBMANAGER_H

@@ -6,6 +6,7 @@
 #include <QSqlRecord>
 #include <QFileInfo>
 #include <QMessageBox>
+#include <QDate>
 
 DbManager* DbManager::instance = NULL;
 DbManager* DbManager::getInstance() {
@@ -33,7 +34,8 @@ DbManager::DbManager() {
         qDebug() << "Error DbManager: Failed connecting to database";
         return;
     }
-    if(db.tables().isEmpty() || !db.tables().contains("Customer") || !db.tables().contains("Account") || !db.tables().contains("Transaction") || !db.tables().contains("CustomerFTS")) {
+    if(db.tables().isEmpty() || !db.tables().contains("Customer") || !db.tables().contains("Account")
+            || !db.tables().contains("Transaction") || !db.tables().contains("CustomerFTS") || !runQuery("PRAGMA foreign_keys = ON;")) {
         db.close();
         QMessageBox::critical(NULL, "Connecting to database", "Database is not configured correctly");
         qDebug() << "Error DbManager: Database is not configured correctly";
@@ -41,31 +43,33 @@ DbManager::DbManager() {
     qDebug() << "DbManager created";
 }
 
-bool DbManager::addCustomer(const Customer r) {
-    bool exists = existsQuery("SELECT id FROM Customer where id = '" + r.id + "'");
-    db.transaction();
+Customer DbManager::addCustomer(Customer cust) {
     QSqlQuery query(db);
     query.prepare("INSERT INTO Customer (name, ssn, phone, address, email) VALUES (:name, :ssn, :phone, :address, :email)");
-    query.bindValue(":name", r.name);
-    query.bindValue(":ssn", r.ssn);
-    query.bindValue(":phone", r.phone);
-    query.bindValue(":address", r.address);
-    query.bindValue(":email", r.email);
+    query.bindValue(":name", cust.name);
+    query.bindValue(":ssn", cust.ssn);
+    query.bindValue(":phone", cust.phone);
+    query.bindValue(":address", cust.address);
+    query.bindValue(":email", cust.email);
+    db.transaction();
     bool success = query.exec();
-    db.commit();
     if(success) {
-        Customer r2 = r;
-        r2.id = query.lastInsertId().toString();
-        addCustomerFST(r2);
+        cust.id = query.lastInsertId().toString();
+        success = addCustomerFST(cust);
     } else {
-        qDebug() << query.executedQuery();
         qDebug() << "Error addCustomer:  " << query.lastError();
+        qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    return success;
+    if(!success) {
+        cust.id = "";
+        db.rollback();
+    }
+    db.commit();
+    return cust;
 }
 
 bool DbManager::addCustomerFST(const Customer r) {
-    db.transaction();
     QSqlQuery query(db);
     query.prepare("INSERT INTO CustomerFTS (id, name, ssn, phone, address, email) VALUES (:id, :name, :ssn, :phone, :address, :email)");
     query.bindValue(":id", r.id);
@@ -76,50 +80,72 @@ bool DbManager::addCustomerFST(const Customer r) {
     query.bindValue(":email", r.email);
     bool success = query.exec();
     if(!success) {
-        qDebug() << query.executedQuery();
         qDebug() << "Error addCustomerFST:  " << query.lastError();
+        qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
     return success;
 }
 
 bool DbManager::addAccount(const Account r) {
-    db.transaction();
     QSqlQuery query(db);
-    query.prepare("INSERT INTO Account (customerid, accountnr, name, balance, date) VALUES (:customerid, :accountnr, :name, :balance, :date)");
+    query.prepare("INSERT INTO Account (customerid, accountnr, name, balance) VALUES (:customerid, :accountnr, :name, :balance)");
     query.bindValue(":customerid", r.customerID);
-    query.bindValue(":accountnr", r.accountnr);
+    query.bindValue(":accountnr", getAccountnr());
     query.bindValue(":name", r.name);
     query.bindValue(":balance", r.balance);
-    query.bindValue(":date", r.date);
     bool success = query.exec();
     if(!success) {
-        qDebug() << query.executedQuery();
         qDebug() << "Error addAccount:  " << query.lastError();
+        qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
     return success;
 }
 
+QString DbManager::getAccountnr() {
+    int accountnr;
+    do {
+        accountnr = rand() % 100000000 + 100000000;
+    } while(existsAccountNr(QString::number(accountnr)));
+    return QString::number(accountnr);
+}
+
 bool DbManager::addTransaction(const Transaction r) {
-    db.transaction();
     QSqlQuery query(db);
     query.prepare("INSERT INTO Transaction (fromid, toid, amount, date) VALUES (:fromid, :toid, :amount, :date)");
     query.bindValue(":fromid", r.fromAccountID);
     query.bindValue(":toid", r.toAccountID);
     query.bindValue(":amount", r.amount);
     query.bindValue(":date", r.date);
+    db.transaction();
     bool success = query.exec();
-    if(!success) {
-        qDebug() << query.executedQuery();
+    if(success) {
+        Transaction r2 = r;
+        r2.id = query.lastInsertId().toString();
+        success = executeTransfer(r2);
+    } else {
         qDebug() << "Error addTransaction:  " << query.lastError();
+        qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
+    if(!success) db.rollback();
     return success;
 }
 
+bool DbManager::executeTransfer(const Transaction r) {
+    Account fromAccount = fetchAccount(r.fromAccountID);
+    fromAccount.balance -= r.amount;
+
+    Account toAccount = fetchAccount(r.toAccountID);
+    toAccount.balance += r.amount;
+
+    return !fromAccount.id.isEmpty() && !toAccount.id.isEmpty() && updateAccount(fromAccount) && updateAccount(toAccount);
+}
+
+
+
 bool DbManager::updateCustomer(const Customer r) {
-    db.transaction();
     QSqlQuery query(db);
     query.prepare("UPDATE Customer SET name=:name, ssn=:ssn, phone=:phone, address=:address, email=:email WHERE id=:id");
     query.bindValue(":id", r.id);
@@ -128,19 +154,21 @@ bool DbManager::updateCustomer(const Customer r) {
     query.bindValue(":phone", r.phone);
     query.bindValue(":address", r.address);
     query.bindValue(":email", r.email);
+    db.transaction();
     bool success = query.exec();
-    db.commit();
     if(success) {
-        updateCustomerFST(r);
+        success = updateCustomerFST(r);
     } else {
         qDebug() << "Error updateCustomer: " << query.lastError();
         qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
+    if(success) db.commit();
+    else db.rollback();
     return success;
 }
 
 bool DbManager::updateCustomerFST(const Customer r) {
-    db.transaction();
     QSqlQuery query(db);
     query.prepare("UPDATE CustomerFTS SET name=:name, ssn=:ssn, phone=:phone, address=:address, email=:email WHERE id MATCH :id");
     query.bindValue(":id", r.id);
@@ -151,15 +179,14 @@ bool DbManager::updateCustomerFST(const Customer r) {
     query.bindValue(":email", r.email);
     bool success = query.exec();
     if(!success) {
-        qDebug() << query.executedQuery();
         qDebug() << "Error updateCustomerFST:  " << query.lastError();
+        qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
     return success;
 }
 
 bool DbManager::updateAccount(const Account r) {
-    db.transaction();
     QSqlQuery query(db);
     query.prepare("UPDATE Account SET name=:name, customerid=:customerid, balance=:balance WHERE id=:id");
     query.bindValue(":id", r.id);
@@ -168,161 +195,93 @@ bool DbManager::updateAccount(const Account r) {
     query.bindValue(":phone", r.balance);
     bool success = query.exec();
     if(!success) {
-        qDebug() << query.executedQuery();
         qDebug() << "Error updateAccount:  " << query.lastError();
-    }
-    db.commit();
-    return success;
-}
-
-bool DbManager::updateTransaction(const Transaction r) {
-    db.transaction();
-    QSqlQuery query(db);
-    query.prepare("UPDATE Transaction SET fromid=:fromid, toid=:toid, amount=:amount, date=:date WHERE id=:id");
-    query.bindValue(":id", r.id);
-    query.bindValue(":fromid", r.fromAccountID);
-    query.bindValue(":toid", r.toAccountID);
-    query.bindValue(":amount", r.amount);
-    query.bindValue(":date", r.date);
-    bool success = query.exec();
-    if(!success) {
         qDebug() << query.executedQuery();
-        qDebug() << "Error updateTransaction:  " << query.lastError();
+        qDebug() << query.boundValues();
     }
-    db.commit();
     return success;
 }
 
-bool DbManager::deleteCustomer(const Customer r) {
-    db.transaction();
-    QSqlQuery query(db);
-    query.prepare("DELETE from Customer where id=:id");
-    query.bindValue(":id", r.id);
-    bool success = query.exec();
-    if(success) {
-        deleteCustomerFST(r);
-    } else {
-        qDebug() << query.executedQuery();
-        qDebug() << "Error deleteCustomer:  " << query.lastError();
-    }
-    db.commit();
-    return success;
-}
-
-bool DbManager::deleteCustomerFST(const Customer r) {
-    db.transaction();
-    QSqlQuery query(db);
-    query.prepare("DELETE from CustomerFTS where id MATCH :id");
-    query.bindValue(":id", r.id);
-    bool success = query.exec();
-    if(!success) {
-        qDebug() << query.executedQuery();
-        qDebug() << "Error deleteCustomerFST:  " << query.lastError();
-    }
-    db.commit();
-    return success;
-}
-
-bool DbManager::deleteAccount(const Account r) {
-    db.transaction();
-    QSqlQuery query(db);
-    query.prepare("DELETE from Account where id=:id");
-    query.bindValue(":id", r.id);
-    bool success = query.exec();
-    if(!success) {
-        qDebug() << query.executedQuery();
-        qDebug() << "Error deleteAccount:  " << query.lastError();
-    }
-    db.commit();
-    return success;
-}
-
-bool DbManager::deleteTransaction(const Transaction r) {
-    db.transaction();
-    QSqlQuery query(db);
-    query.prepare("DELETE from Transaction where id=:id");
-    query.bindValue(":id", r.id);
-    bool success = query.exec();
-    if(!success) {
-        qDebug() << query.executedQuery();
-        qDebug() << "Error deleteTransaction:  " << query.lastError();
-    }
-    db.commit();
-    return success;
-}
-
-Customer DbManager::fetchCustomer(const Customer r) {
-    db.transaction();
+Customer DbManager::fetchCustomer(QString id) {
     QSqlQuery query(db);
     query.prepare("SELECT * FROM Customer WHERE id=:id");
-    query.bindValue(":id", r.id);
-    Customer getC;
-    if(query.exec()) {
-        if(!query.next() && !query.first()) return getC;
-        QSqlRecord record = query.record();
-        getC.id = record.value(Util::DB_CUSTOMER_ID).toString();
-        getC.name = record.value(Util::DB_CUSTOMER_NAME).toString();
-        getC.ssn = query.value(Util::DB_CUSTOMER_SSN).toString();
-        getC.phone = query.value(Util::DB_CUSTOMER_PHONE).toString();
-        getC.address = query.value(Util::DB_CUSTOMER_ADDRESS).toString();
-        getC.email = query.value(Util::DB_CUSTOMER_EMAIL).toString();
-    } else {
-        qDebug() << "fetchCustomer error: " << query.lastError();
-        qDebug() << query.executedQuery();
-    }
-    db.commit();
-    return getC;
-}
-
-Account DbManager::fetchAccount(const Account r) {
-    db.transaction();
-    QSqlQuery query(db);
-    query.prepare("SELECT * FROM Account WHERE id=:id");
-    query.bindValue(":id", r.id);
-    Account getR;
+    query.bindValue(":id", id);
+    Customer cust;
     if(query.exec()) {
         if(query.first()) {
             QSqlRecord record = query.record();
-            getR.id = record.value(Util::DB_ACCOUNT_ID).toString();
-            getR.name = record.value(Util::DB_ACCOUNT_NAME).toString();
-            getR.customerID = query.value(Util::DB_ACCOUNT_CUSTOMERID).toString();
-            getR.balance = query.value(Util::DB_ACCOUNT_BALANCE).toString();
-            getR.accountnr = query.value(Util::DB_ACCOUNT_ACCOUNTNR).toString();
-            getR.date = query.value(Util::DB_ACCOUNT_DATE).toString();
+            cust.id = record.value(DB_CUSTOMER_ID).toString();
+            cust.name = record.value(DB_CUSTOMER_NAME).toString();
+            cust.ssn = query.value(DB_CUSTOMER_SSN).toString();
+            cust.phone = query.value(DB_CUSTOMER_PHONE).toString();
+            cust.address = query.value(DB_CUSTOMER_ADDRESS).toString();
+            cust.email = query.value(DB_CUSTOMER_EMAIL).toString();
+        } else {
+            qDebug() << "fetchCustomer error: " << "Record not found.";
+            qDebug() << query.executedQuery();
+            qDebug() << query.boundValues();
+        }
+    } else {
+        qDebug() << "fetchCustomer error: " << query.lastError();
+        qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
+    }
+    return cust;
+}
+
+Account DbManager::fetchAccount(QString id) {
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM Account WHERE id=:id");
+    query.bindValue(":id", id);
+    Account account;
+    if(query.exec()) {
+        if(query.first()) {
+            QSqlRecord record = query.record();
+            account.id = record.value(DB_ACCOUNT_ID).toString();
+            account.name = record.value(DB_ACCOUNT_NAME).toString();
+            account.customerID = query.value(DB_ACCOUNT_CUSTOMERID).toString();
+            account.balance = query.value(DB_ACCOUNT_BALANCE).toInt();
+            account.accountnr = query.value(DB_ACCOUNT_ACCOUNTNR).toString();
+        } else {
+            qDebug() << "fetchAccount error: " << "Record not found.";
+            qDebug() << query.executedQuery();
+            qDebug() << query.boundValues();
         }
     } else {
         qDebug() << "fetchAccount error: " << query.lastError();
         qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
-    return getR;
+    return account;
 }
 
-Transaction DbManager::fetchTransaction(const Transaction r) {
-    db.transaction();
+Transaction DbManager::fetchTransaction(QString id) {
     QSqlQuery query(db);
     query.prepare("SELECT * FROM Transaction WHERE id=:id");
-    query.bindValue(":id", r.id);
-    Transaction getR;
+    query.bindValue(":id", id);
+    Transaction trans;
     if(query.exec()) {
         if(query.first()) {
             QSqlRecord record = query.record();
-            getR.id = record.value(Util::DB_TRANSACTION_ID).toString();
-            getR.fromAccountID = record.value(Util::DB_TRANSACTION_FROMID).toString();
-            getR.toAccountID = query.value(Util::DB_TRANSACTION_TOID).toString();
-            getR.amount = query.value(Util::DB_TRANSACTION_AMOUNT).toString();
-            getR.date = query.value(Util::DB_TRANSACTION_DATE).toString();
+            trans.id = record.value(DB_TRANSACTION_ID).toString();
+            trans.fromAccountID = record.value(DB_TRANSACTION_FROMACCOUNTID).toString();
+            trans.toAccountID = query.value(DB_TRANSACTION_TOACCOUNTID).toString();
+            trans.amount = query.value(DB_TRANSACTION_AMOUNT).toInt();
+            trans.date = QDate::fromString(query.value(DB_TRANSACTION_DATE).toString(), "ddMMyyyy");
+        } else {
+            qDebug() << "fetchTransaction error: " << "Record not found.";
+            qDebug() << query.executedQuery();
+            qDebug() << query.boundValues();
         }
     } else {
         qDebug() << "fetchTransaction error: " << query.lastError();
         qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
-    return getR;
+    return trans;
 }
 
 QSqlQueryModel* DbManager::fetchCustomerList() {
-    db.transaction();
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query(db);
     query.prepare("SELECT * FROM Customer");
@@ -331,13 +290,12 @@ QSqlQueryModel* DbManager::fetchCustomerList() {
     } else {
         qDebug() << "fetchCustomerList error: " << query.lastError();
         qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
     return model;
 }
 
 QSqlQuery DbManager::fetchCustomerFTSlist(QString s) {
-    db.transaction();
     QSqlQuery query(db);
     s = s.trimmed();
     if(s.isEmpty()) query.prepare("SELECT * FROM CustomerFTS");
@@ -349,13 +307,12 @@ QSqlQuery DbManager::fetchCustomerFTSlist(QString s) {
     if(!query.exec()) {
         qDebug() << "fetchCustomerList error: " << query.lastError();
         qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
     return query;
 }
 
 QSqlQueryModel* DbManager::fetchAccountList(QString customerID) {
-    db.transaction();
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query(db);
     query.prepare("SELECT * FROM Account where customerid=:customerid");
@@ -365,24 +322,25 @@ QSqlQueryModel* DbManager::fetchAccountList(QString customerID) {
     } else {
         qDebug() << "fetchAccountList error: " << query.lastError();
         qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
     return model;
 }
 
 QSqlQueryModel* DbManager::fetchTransactionList(QString customerID) {
-    db.transaction();
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query(db);
-    query.prepare("SELECT * FROM Transaction where customerid=:customerid");
-    query.bindValue(":customerid", customerID);
+    QString s = "SELECT * FROM Transaction";
+    if(!customerID.isEmpty()) s += " where customerid=:customerid";
+    query.prepare(s);
+    if(!customerID.isEmpty()) query.bindValue(":customerid", customerID);
     if(query.exec()) {
         model->setQuery(query);
     } else {
         qDebug() << "fetchTransactionList error: " << query.lastError();
         qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
     return model;
 }
 
@@ -390,8 +348,11 @@ bool DbManager::existsSSN(QString ssn) {
     return existsQuery("SELECT ssn FROM Customer where ssn = '" + ssn + "'");
 }
 
+bool DbManager::existsAccountNr(QString accountNr) {
+    return existsQuery("SELECT accountnr FROM Account where accountnr = '" + accountNr + "'");
+}
+
 bool DbManager::existsQuery(const QString queryString) {
-    db.transaction();
     QSqlQuery query(db);
     query.prepare(queryString);
     bool finnes;
@@ -400,7 +361,32 @@ bool DbManager::existsQuery(const QString queryString) {
     } else {
         qDebug() << "existsQuery error: " << query.lastError();
         qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
     }
-    db.commit();
     return finnes;
 }
+
+bool DbManager::runQuery(const QString queryString) {
+    QSqlQuery query(db);
+    query.prepare(queryString);
+    bool success = true;
+    if(!query.exec()) {
+        qDebug() << "runQuery error: " << query.lastError();
+        qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
+        success = false;
+    }
+    return success;
+}
+
+//QSqlRecord DbManager::selectQuery(const QString queryString) {
+//    QSqlQuery query(db);
+//    query.prepare(queryString);
+//    bool success = true;
+//    if(!query.exec() || !query.first() || !query.isSelect()) {
+//        qDebug() << "getQuery error: " << query.lastError();
+//        qDebug() << query.executedQuery();
+//        return QSqlRecord();
+//    }
+//    return query.record();
+//}
