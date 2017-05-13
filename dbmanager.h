@@ -26,10 +26,11 @@ public:
     Account fetchAccount(QString id);
     Transaction fetchTransaction(QString id);
 
-    QSqlQueryModel* fetchCustomerList();
+    QSqlQueryModel* fetchCustomerList(int state = 1);
+    QSqlQuery searchCustomer(QString searchText, int state = 1);
     QSqlQueryModel* fetchAccountList(QString customerID);
     QSqlQueryModel* fetchTransactionList(QString customerID);
-    QSqlQuery fetchCustomerFTSlist(QString s);
+
 
     bool existsSSN(QString ssn);
 
@@ -45,6 +46,7 @@ private:
     bool executeTransfer(Transaction r);
     bool existsAccountNr(QString accountNr);
     QString getAccountnr();
+    void error(QString s, QSqlQuery query);
 };
 
 #endif // DBMANAGER_H

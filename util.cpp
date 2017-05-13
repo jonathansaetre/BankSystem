@@ -9,7 +9,7 @@ struct Customer {
     QString address;
     QString phone;
     QString email;
-    QString state;
+    int state = 1;
 };
 
 struct Account {
@@ -18,7 +18,7 @@ struct Account {
     QString accountnr;
     QString name;
     int balance = 0;
-    QString state;
+    int state = 1;
 };
 
 struct Transaction {
@@ -60,7 +60,7 @@ public:
         customer.phone = model->index(index, DB_CUSTOMER_PHONE).data().toString();
         customer.address = model->index(index, DB_CUSTOMER_ADDRESS).data().toString();
         customer.email = model->index(index, DB_CUSTOMER_EMAIL).data().toString();
-        customer.state = model->index(index, DB_CUSTOMER_STATE).data().toString();
+        customer.state = model->index(index, DB_CUSTOMER_STATE).data().toInt();
         return customer;
     }
 
@@ -71,7 +71,7 @@ public:
         account.accountnr = model->index(index, DB_ACCOUNT_ACCOUNTNR).data().toString();
         account.name = model->index(index, DB_ACCOUNT_NAME).data().toString();
         account.balance = model->index(index, DB_ACCOUNT_BALANCE).data().toInt();
-        account.state = model->index(index, DB_ACCOUNT_STATE).data().toString();
+        account.state = model->index(index, DB_ACCOUNT_STATE).data().toInt();
         return account;
     }
 };
