@@ -15,6 +15,7 @@ public:
     explicit TransactionList(QWidget *parent = 0);
     ~TransactionList();
     void init(Customer customer);
+    void init();
 
 private slots:
     void on_buttonNewTransaction_clicked();
