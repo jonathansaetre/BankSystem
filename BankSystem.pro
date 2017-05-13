@@ -32,6 +32,7 @@ SOURCES += main.cpp\
     dbmanager.cpp \
     deletecustomer.cpp \
     accountlist.cpp \
+    util.cpp \
     accountdelete.cpp \
     accountcreate.cpp
 

@@ -1,15 +1,22 @@
 #include <deletecustomer.h>
 #include <ui_deletecustomer.h>
 #include <QSqlQueryModel>
+#include <QCompleter>
 #include <QMessageBox>
 #include <QSqlRecord>
 
 Customerdelete::Customerdelete(QWidget *parent) : QDialog(parent), ui(new Ui::Deletecustomer) {
     ui->setupUi(this);
     setFocus();
-    model = DbManager::getInstance()->fetchCustomerList();
-    ui->customerCombobox->setModel(model);
-    ui->customerCombobox->setModelColumn(DB_CUSTOMER_SSN);
+
+    QSqlQueryModel *custModel = DbManager::getInstance()->fetchCustomerList();
+    QCompleter *custCompleter = new QCompleter(custModel);
+    custCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+    custCompleter->setCompletionColumn(DB_CUSTOMER_NAME);
+    custCompleter->setFilterMode(Qt::MatchContains);
+
+    ui->customersnn->setCompleter(custCompleter);
+    //ui->nameBox->setModelColumn(DB_CUSTOMER_NAME);
 }
 
 Customerdelete::~Customerdelete() {
@@ -22,22 +29,17 @@ void Customerdelete::on_closeButton_clicked() {
 }
 
 void Customerdelete::on_deleteButton_clicked() {
-    Customer c;
-    int index = ui->customerCombobox->currentIndex();
-    c.id = model->record(index).value(DB_CUSTOMER_ID).toString();
-//    if(DbManager::getInstance()->deleteCustomer(c.id)){
-//        QMessageBox::information(this, "Delete customer ", "Deleted customer Successfully");
-//    } else {
-//        QMessageBox::information(this, "Delete customer ", "Deleted customer Failed");
-//    }
+    QModelIndex index = ui->customersnn->completer()->currentIndex();
+    Customer c = Util::getCustomer(ui->customersnn->completer()->completionModel(), index.row());
+    c.state=0;
+    if(DbManager::getInstance()->updateCustomer(c)){
+        QMessageBox::information(this, "Delete customer", "Delete customer successfully");
+    } else {
+        QMessageBox::information(this, "Delete customerr", "Delete customer failed");
+    }
 
-    model = DbManager::getInstance()->fetchCustomerList();
-    ui->customerCombobox->setModel(model);
-    ui->customerCombobox->setModelColumn(DB_CUSTOMER_SSN);
+
 }
 
-void Customerdelete::on_customerCombobox_currentIndexChanged() {
-    int index = ui->customerCombobox->currentIndex();
-    QString name = model->record(index).value(DB_CUSTOMER_NAME).toString();
-    ui->nameBox->setText(name);
-}
+
+

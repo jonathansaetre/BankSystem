@@ -21,6 +21,8 @@ signals:
 private slots:
     void on_cancelButton_clicked();
 
+    void on_customername_editingFinished();
+
 private:
     Ui::accountdelete *ui;
 };

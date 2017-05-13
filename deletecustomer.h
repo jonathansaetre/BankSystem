@@ -16,10 +16,11 @@ public:
     explicit Customerdelete(QWidget *parent = 0);
     ~Customerdelete();
 
+
 private slots:
     void on_closeButton_clicked();
     void on_deleteButton_clicked();
-    void on_customerCombobox_currentIndexChanged();
+
 
 signals:
     void showPrev();

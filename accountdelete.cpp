@@ -1,6 +1,6 @@
 #include "accountdelete.h"
 #include "ui_accountdelete.h"
-
+#include <QCompleter>
 accountdelete::accountdelete(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::accountdelete)
@@ -8,11 +8,15 @@ accountdelete::accountdelete(QWidget *parent) :
     ui->setupUi(this);
     setFocus();
 
-    ui->customercomboBox->setModel(DbManager::getInstance()->fetchCustomerList());
-    ui->customercomboBox->setModelColumn(DB_CUSTOMER_SSN);
+    QSqlQueryModel *custModel = DbManager::getInstance()->fetchCustomerList();
+    QCompleter *custCompleter = new QCompleter(custModel);
+    custCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+    custCompleter->setCompletionColumn(DB_CUSTOMER_NAME);
+    custCompleter->setFilterMode(Qt::MatchContains);
 
-   // ui->customercomboBox->setModel( DbManager::getInstance()->fetchAccountList(ui->customercomboBox->currentText()));
-    //ui->customercomboBox->setModelColumn(Util::DB_ACCOUNT_ACCOUNTNR);
+    ui->customername->setCompleter(custCompleter);
+    ui->accountcomboBox->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
+
 
 }
 
@@ -21,8 +25,20 @@ accountdelete::~accountdelete()
     delete ui;
 }
 
+
 void accountdelete::on_cancelButton_clicked()
 {
     close();
     emit showPrev();
+}
+
+void accountdelete::on_customername_editingFinished()
+{
+    QModelIndex index = ui->customername->completer()->currentIndex();
+    if(!index.isValid()) {
+        ui->customername->clear();
+        return;
+    }
+    Customer cust = Util::getCustomer(ui->customername->completer()->completionModel(), index.row());
+    ui->accountcomboBox->setModel(DbManager::getInstance()->fetchAccountList(cust.id));
 }
