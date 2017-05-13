@@ -52,7 +52,7 @@
       <string notr="true">color:blue</string>
      </property>
      <property name="text">
-      <string>Account List</string>
+      <string>Account list</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

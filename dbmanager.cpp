@@ -35,7 +35,7 @@ DbManager::DbManager() {
         return;
     }
     if(db.tables().isEmpty() || !db.tables().contains("Customer") || !db.tables().contains("Account")
-            || !db.tables().contains("Transaction") || !db.tables().contains("CustomerFTS") || !runQuery("PRAGMA foreign_keys = ON;")) {
+            || !db.tables().contains("BankTransaction") || !db.tables().contains("CustomerFTS") || !runQuery("PRAGMA foreign_keys = ON;")) {
         db.close();
         QMessageBox::critical(NULL, "Connecting to database", "Database is not configured correctly");
         qDebug() << "Error DbManager: Database is not configured correctly";
@@ -107,9 +107,9 @@ QString DbManager::getAccountnr() {
 
 bool DbManager::addTransaction(const Transaction r) {
     QSqlQuery query(db);
-    query.prepare("INSERT INTO Transaction (fromid, toid, amount, date) VALUES (:fromid, :toid, :amount, :date)");
-    query.bindValue(":fromid", r.fromAccountID);
-    query.bindValue(":toid", r.toAccountID);
+    query.prepare("INSERT INTO BankTransaction (fromaccountid, toaccountid, amount, date) VALUES (:fromaccountid, :toaccountid, :amount, :date)");
+    query.bindValue(":fromaccountid", r.fromAccountID);
+    query.bindValue(":toaccountid", r.toAccountID);
     query.bindValue(":amount", r.amount);
     query.bindValue(":date", r.date);
     db.transaction();
@@ -240,7 +240,7 @@ Account DbManager::fetchAccount(QString id) {
 
 Transaction DbManager::fetchTransaction(QString id) {
     QSqlQuery query(db);
-    query.prepare("SELECT * FROM Transaction WHERE id=:id");
+    query.prepare("SELECT * FROM BankTransaction WHERE id=:id");
     query.bindValue(":id", id);
     Transaction trans;
     if(query.exec()) {
@@ -278,14 +278,9 @@ QSqlQueryModel* DbManager::fetchCustomerList(int state) {
 QSqlQuery DbManager::searchCustomer(QString searchText, int state) {
     QSqlQuery query(db);
     searchText = searchText.trimmed();
-    QString s = "SELECT * FROM CustomerFTS WHERE state MATCH :state";
-    if(searchText.isEmpty()){
-        query.prepare(s);
-    } else {
-        searchText += "*";
-        query.prepare(s + " AND CustomerFTS MATCH :searchText");
-        query.bindValue(":searchText", searchText);
-    }
+    searchText += "*";
+    query.prepare("SELECT * FROM CustomerFTS WHERE CustomerFTS MATCH 'state:" + QString::number(state) + " " + searchText + "'");
+    query.bindValue(":searchText", searchText);
     query.bindValue(":state", state);
     if(!query.exec()) {
         error("fetchCustomerFTSlist", query);
@@ -309,7 +304,7 @@ QSqlQueryModel* DbManager::fetchAccountList(QString customerID) {
 QSqlQueryModel* DbManager::fetchTransactionList(QString customerID) {
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query(db);
-    QString s = "SELECT * FROM Transaction";
+    QString s = "SELECT * FROM BankTransaction";
     if(customerID.isEmpty()){
         query.prepare(s);
     } else {

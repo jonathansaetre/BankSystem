@@ -91,34 +91,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="txtFromCust">
-       <property name="minimumSize">
-        <size>
-         <width>500</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>500</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Times New Roman</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:blue</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="lbFromAcc">
        <property name="minimumSize">
@@ -234,7 +206,7 @@
         <number>40</number>
        </property>
        <property name="placeholderText">
-        <string>internal transfer</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -427,6 +399,22 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="leFromCust">
+       <property name="minimumSize">
+        <size>
+         <width>500</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>500</width>
+         <height>50</height>
+        </size>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -525,6 +513,17 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>leFromCust</tabstop>
+  <tabstop>cbFromAcc</tabstop>
+  <tabstop>leToCust</tabstop>
+  <tabstop>cbToAcc</tabstop>
+  <tabstop>date</tabstop>
+  <tabstop>leAmount</tabstop>
+  <tabstop>buttonSave_New</tabstop>
+  <tabstop>buttonSave</tabstop>
+  <tabstop>buttonCancel</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

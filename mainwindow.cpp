@@ -28,6 +28,7 @@ void MainWindow::on_buttonCustomers_clicked() {
 void MainWindow::on_buttonTransactions_clicked() {
     hide();
     TransactionList *transactionlist = new TransactionList();
+    transactionlist->init();
     QObject::connect(transactionlist, SIGNAL(showPrev()), SLOT(show()));
     transactionlist->show();
 }

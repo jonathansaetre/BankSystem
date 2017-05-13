@@ -18,12 +18,14 @@ CustomerDetails::~CustomerDetails() {
 }
 
 void CustomerDetails::newCustomer() {
+    setWindowTitle("New customer");
     ui->labelTitle->setText("New customer");
     ui->accountButton->hide();
     ui->transactionButton->hide();
 }
 
 void CustomerDetails::editCustomer(Customer customer) {
+    setWindowTitle("Edit customer");
     ui->labelTitle->setText("Edit customer");
     this->customer = customer;
     ui->nameBox->setText(customer.name);

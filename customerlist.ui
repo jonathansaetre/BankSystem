@@ -55,7 +55,7 @@
       <string notr="true">color:blue</string>
      </property>
      <property name="text">
-      <string>Customers List</string>
+      <string>Customers list</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

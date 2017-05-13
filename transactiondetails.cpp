@@ -8,7 +8,20 @@
 
 TransactionDetails::TransactionDetails(QWidget *parent) : QWidget(parent), ui(new Ui::TransactionDetails) {
     ui->setupUi(this);
-//    QObject::connect(ui->textSearchEdit, SIGNAL(textChanged(QString)), this, SLOT(editingFinished(QString)));
+
+    QSqlQueryModel *custModel = DbManager::getInstance()->fetchCustomerList();
+    QCompleter *custCompleter = new QCompleter(custModel);
+    custCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+    custCompleter->setCompletionColumn(DB_CUSTOMER_NAME);
+    custCompleter->setFilterMode(Qt::MatchContains);
+
+    ui->leFromCust->setCompleter(custCompleter);
+    ui->cbFromAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
+    ui->leToCust->setCompleter(custCompleter);
+    ui->cbToAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
+    ui->date->setDate(QDate::currentDate());
+    ui->leAmount->setInputMask("D000000000");
+    ui->leAmount->setCursorPosition(0);
 }
 
 TransactionDetails::~TransactionDetails() {
@@ -17,22 +30,10 @@ TransactionDetails::~TransactionDetails() {
 
 void TransactionDetails::init(Customer customer) {
     this->customer = customer;
-
-    ui->txtFromCust->setText(customer.name);
-
+    ui->leFromCust->setText(customer.name);
     ui->cbFromAcc->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
-    ui->cbFromAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
-
-
-    QSqlQueryModel *toCustModel = DbManager::getInstance()->fetchCustomerList();
-    QCompleter *tuCustCompleter = new QCompleter(toCustModel);
-    tuCustCompleter->setCaseSensitivity(Qt::CaseInsensitive);
-    tuCustCompleter->setCompletionColumn(DB_CUSTOMER_NAME);
-    tuCustCompleter->setFilterMode(Qt::MatchContains);
-    ui->leToCust->setCompleter(tuCustCompleter);
-
+    ui->leToCust->setPlaceholderText("Internal transfer");
     ui->cbToAcc->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
-    ui->cbToAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
 }
 
 void TransactionDetails::on_buttonSave_clicked() {
@@ -40,15 +41,23 @@ void TransactionDetails::on_buttonSave_clicked() {
 }
 
 void TransactionDetails::save(bool closeWindow) {
-    bool success = DbManager::getInstance()->addTransaction(getRecord());
+//    if(!ui->leAmount->v)
+    Transaction transaction = getRecord();
+//    if()
+    bool success = DbManager::getInstance()->addTransaction(transaction);
     if(success) {
         if(closeWindow) {
             close();
             emit showPrev();
         } else {
-            foreach(QLineEdit *widget, this->findChildren<QLineEdit*>()) {
-                widget->clear();
+            if(customer.id.isEmpty()) {
+                ui->leFromCust->clear();
+                ui->cbFromAcc->clear();
             }
+            ui->leToCust->clear();
+            ui->cbToAcc->clear();
+            ui->date->setDate(QDate::currentDate());
+            ui->leAmount->clear();
         }
     } else {
         QMessageBox::information(this, "New transaction", "New transaction failed");

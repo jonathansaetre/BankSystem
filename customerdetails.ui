@@ -408,13 +408,15 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>addressBox</tabstop>
-  <tabstop>buttonCancel</tabstop>
-  <tabstop>buttonSave</tabstop>
   <tabstop>nameBox</tabstop>
   <tabstop>ssnBox</tabstop>
+  <tabstop>addressBox</tabstop>
   <tabstop>phoneBox</tabstop>
   <tabstop>emailBox</tabstop>
+  <tabstop>buttonSave</tabstop>
+  <tabstop>accountButton</tabstop>
+  <tabstop>transactionButton</tabstop>
+  <tabstop>buttonCancel</tabstop>
  </tabstops>
  <resources/>
  <connections/>
