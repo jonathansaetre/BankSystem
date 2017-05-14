@@ -4,7 +4,6 @@
 #include <transactionlist.h>
 #include <customerdetails.h>
 #include <deletecustomer.h>
-#include <accountcreate.h>
 #include <transactiondetails.h>
 #include <accountdelete.h>
 #include <dbmanager.h>
@@ -46,13 +45,6 @@ void MainWindow::on_actionDelete_triggered() {
     Customerdelete *customerDelete = new Customerdelete();
     QObject::connect(customerDelete, SIGNAL(showPrev()), SLOT(show()));
     customerDelete->show();
-}
-
-void MainWindow::on_actionNew_2_triggered() {
-    hide();
-    AccountDetails *createaccount = new AccountDetails();
-    QObject::connect(createaccount, SIGNAL(showPrev()), SLOT(show()));
-    createaccount->show();
 }
 
 void MainWindow::on_exitButton_clicked() {

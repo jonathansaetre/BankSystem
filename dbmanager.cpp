@@ -7,6 +7,7 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QDate>
+#include <QStandardItemModel>
 
 DbManager* DbManager::instance = NULL;
 DbManager* DbManager::getInstance() {
@@ -55,6 +56,7 @@ Customer DbManager::addCustomer(Customer cust) {
     bool success = query.exec();
     if(success) {
         cust.id = query.lastInsertId().toString();
+        cust = fetchCustomer(cust.id);
         success = addCustomerFST(cust);
     } else {
         error("addCustomer", query);
@@ -69,13 +71,14 @@ Customer DbManager::addCustomer(Customer cust) {
 
 bool DbManager::addCustomerFST(const Customer r) {
     QSqlQuery query(db);
-    query.prepare("INSERT INTO CustomerFTS (id, name, ssn, phone, address, email) VALUES (:id, :name, :ssn, :phone, :address, :email)");
+    query.prepare("INSERT INTO CustomerFTS (id, name, ssn, phone, address, email, state) VALUES (:id, :name, :ssn, :phone, :address, :email, :state)");
     query.bindValue(":id", r.id);
     query.bindValue(":name", r.name);
     query.bindValue(":ssn", r.ssn);
     query.bindValue(":phone", r.phone);
     query.bindValue(":address", r.address);
     query.bindValue(":email", r.email);
+    query.bindValue(":state", r.state == 0 ? 0 : 1);
     bool success = query.exec();
     if(!success) {
         error("addCustomerFST", query);
@@ -146,7 +149,7 @@ bool DbManager::updateCustomer(const Customer r) {
     query.bindValue(":phone", r.phone);
     query.bindValue(":address", r.address);
     query.bindValue(":email", r.email);
-    query.bindValue(":state", r.state);
+    query.bindValue(":state", r.state == 0 ? 0 : 1);
     db.transaction();
     bool success = query.exec();
     if(success) {
@@ -168,7 +171,7 @@ bool DbManager::updateCustomerFST(const Customer r) {
     query.bindValue(":phone", r.phone);
     query.bindValue(":address", r.address);
     query.bindValue(":email", r.email);
-    query.bindValue(":state", r.state);
+    query.bindValue(":state", r.state == 0 ? 0 : 1);
     bool success = query.exec();
     if(!success) {
         error("updateCustomerFST", query);
@@ -260,13 +263,41 @@ Transaction DbManager::fetchTransaction(QString id) {
     return trans;
 }
 
-QSqlQueryModel* DbManager::fetchCustomerList(int state) {
+QSqlQueryModel* DbManager::fetchQueryCustomerList(int state) {
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query(db);
-    query.prepare("SELECT * FROM Customer WHERE state=:state");
+    query.prepare("SELECT * FROM Customer WHERE state=:state ORDER BY name");
     query.bindValue(":state", state);
     if(query.exec()) {
         model->setQuery(query);
+
+    } else {
+        qDebug() << "fetchCustomerList error: " << query.lastError();
+        qDebug() << query.executedQuery();
+        qDebug() << query.boundValues();
+    }
+    return model;
+}
+
+QStandardItemModel* DbManager::fetchStandardCustomerList(int state) {
+    QStandardItemModel *model = new QStandardItemModel();
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM Customer WHERE state=:state ORDER BY name");
+    query.bindValue(":state", state);
+    if(query.exec()) {
+        model->appendRow(QList<QStandardItem*>());
+        while(query.next()) {
+            QSqlRecord record = query.record();
+            QList<QStandardItem*> list;
+            list.append(new QStandardItem(record.value(DB_CUSTOMER_ID).toString()));
+            list.append(new QStandardItem(record.value(DB_CUSTOMER_NAME).toString()));
+            list.append(new QStandardItem(query.value(DB_CUSTOMER_SSN).toString()));
+            list.append(new QStandardItem(query.value(DB_CUSTOMER_PHONE).toString()));
+            list.append(new QStandardItem(query.value(DB_CUSTOMER_ADDRESS).toString()));
+            list.append(new QStandardItem(query.value(DB_CUSTOMER_EMAIL).toString()));
+            list.append(new QStandardItem(query.value(DB_CUSTOMER_STATE).toInt()));
+            model->appendRow(list);
+        }
     } else {
         qDebug() << "fetchCustomerList error: " << query.lastError();
         qDebug() << query.executedQuery();
@@ -308,7 +339,8 @@ QSqlQueryModel* DbManager::fetchTransactionList(QString customerID) {
     if(customerID.isEmpty()){
         query.prepare(s);
     } else {
-        query.prepare(s + " WHERE customerid=:customerid");
+        QString sub = "(SELECT id FROM Account WHERE customerid=:customerid)";
+        query.prepare(s + " WHERE fromaccountid=" + sub + " OR toaccountid=" + sub);
         query.bindValue(":customerid", customerID);
     }
     if(query.exec()) {

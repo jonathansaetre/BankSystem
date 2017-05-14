@@ -6,7 +6,7 @@
 CustomerList::CustomerList(QWidget *parent) : QWidget(parent), ui(new Ui::CustomerList) {
     ui->setupUi(this);
     setFocus();
-    model = DbManager::getInstance()->fetchCustomerList();
+    model = DbManager::getInstance()->fetchQueryCustomerList();
     ui->custList->setModel(model);
     QObject::connect(ui->textSearchEdit, SIGNAL(textChanged(QString)), this, SLOT(textSeachEditChanged(QString)));
     QObject::connect(ui->custList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(custListDoubleClicked(QModelIndex)));
@@ -42,6 +42,6 @@ void CustomerList::custListDoubleClicked(QModelIndex index) {
 }
 
 void CustomerList::showCustList() {
-    model = DbManager::getInstance()->fetchCustomerList();
+    model = DbManager::getInstance()->fetchQueryCustomerList();
     show();
 }

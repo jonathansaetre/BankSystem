@@ -126,13 +126,13 @@
        <property name="minimumSize">
         <size>
          <width>500</width>
-         <height>30</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>500</width>
-         <height>30</height>
+         <height>50</height>
         </size>
        </property>
        <property name="font">
@@ -176,40 +176,6 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="leToCust">
-       <property name="minimumSize">
-        <size>
-         <width>500</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>500</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Times New Roman</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:blue</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="maxLength">
-        <number>40</number>
-       </property>
-       <property name="placeholderText">
-        <string/>
-       </property>
-      </widget>
-     </item>
      <item row="3" column="0">
       <widget class="QLabel" name="lbToAcc">
        <property name="minimumSize">
@@ -237,31 +203,6 @@
        </property>
        <property name="text">
         <string>To account:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="cbToAcc">
-       <property name="minimumSize">
-        <size>
-         <width>500</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>500</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Times New Roman</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:blue</string>
        </property>
       </widget>
      </item>
@@ -300,13 +241,13 @@
        <property name="minimumSize">
         <size>
          <width>500</width>
-         <height>30</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>500</width>
-         <height>30</height>
+         <height>50</height>
         </size>
        </property>
        <property name="font">
@@ -379,13 +320,13 @@
        <property name="minimumSize">
         <size>
          <width>500</width>
-         <height>30</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>500</width>
-         <height>30</height>
+         <height>50</height>
         </size>
        </property>
        <property name="font">
@@ -399,18 +340,59 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="leFromCust">
+     <item row="3" column="1">
+      <widget class="QComboBox" name="cbToAcc">
        <property name="minimumSize">
         <size>
          <width>500</width>
-         <height>30</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>500</width>
-         <height>30</height>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Times New Roman</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:blue</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="cbToCust">
+       <property name="minimumSize">
+        <size>
+         <width>500</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>500</width>
+         <height>50</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="cbFromCust">
+       <property name="minimumSize">
+        <size>
+         <width>500</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>500</width>
+         <height>50</height>
         </size>
        </property>
       </widget>
@@ -424,13 +406,13 @@
        <property name="minimumSize">
         <size>
          <width>200</width>
-         <height>30</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>200</width>
-         <height>30</height>
+         <height>45</height>
         </size>
        </property>
        <property name="font">
@@ -454,13 +436,13 @@
        <property name="minimumSize">
         <size>
          <width>200</width>
-         <height>30</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>200</width>
-         <height>30</height>
+         <height>45</height>
         </size>
        </property>
        <property name="font">
@@ -484,13 +466,13 @@
        <property name="minimumSize">
         <size>
          <width>200</width>
-         <height>30</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>200</width>
-         <height>30</height>
+         <height>45</height>
         </size>
        </property>
        <property name="font">
@@ -514,9 +496,7 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>leFromCust</tabstop>
   <tabstop>cbFromAcc</tabstop>
-  <tabstop>leToCust</tabstop>
   <tabstop>cbToAcc</tabstop>
   <tabstop>date</tabstop>
   <tabstop>leAmount</tabstop>

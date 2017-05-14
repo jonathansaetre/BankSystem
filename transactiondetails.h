@@ -2,6 +2,7 @@
 #define TRANSACTIONDETAILS_H
 #include <QWidget>
 #include <dbmanager.h>
+#include <QComboBox>
 
 namespace Ui {
 class TransactionDetails;
@@ -18,8 +19,10 @@ public:
 
 private slots:
     void on_buttonSave_clicked();
-    void on_leToCust_editingFinished();
     void on_buttonCancel_clicked();
+    void on_cbToCust_activated(int index);
+
+    void on_cbFromCust_activated(int index);
 
 signals:
     void showPrev();
@@ -27,8 +30,10 @@ signals:
 private:
     Ui::TransactionDetails *ui;
     Customer customer;
+    QStandardItemModel *custModel;
     Transaction getRecord();
     void save(bool close);
+//    void setCbCustProperties(QComboBox& cb);
 };
 
 #endif // TRANSACTIONDETAILS_H

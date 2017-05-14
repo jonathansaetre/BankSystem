@@ -1,5 +1,6 @@
 #include <QAbstractItemModel>
 #include <QDate>
+#include <QRegExp>
 
 //Objects
 struct Customer {
@@ -73,5 +74,10 @@ public:
         account.balance = model->index(index, DB_ACCOUNT_BALANCE).data().toInt();
         account.state = model->index(index, DB_ACCOUNT_STATE).data().toInt();
         return account;
+    }
+
+    static bool isNumber(QString s) {
+        QRegExp re("\\d*");
+        return re.exactMatch(s);
     }
 };

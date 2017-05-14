@@ -4,6 +4,7 @@
 #include <QSqlDatabase>
 #include <util.cpp>
 #include <QSqlQueryModel>
+#include <QStandardItemModel>
 
 class DbManager {
 public:
@@ -25,7 +26,8 @@ public:
     Customer fetchCustomer(QString id);
     Account fetchAccount(QString id);
     Transaction fetchTransaction(QString id);
-    QSqlQueryModel* fetchCustomerList(int state = 1);
+    QStandardItemModel* fetchStandardCustomerList(int state = 1);
+    QSqlQueryModel* fetchQueryCustomerList(int state = 1);
     QSqlQuery searchCustomer(QString searchText, int state = 1);
     QSqlQueryModel* fetchAccountList(QString customerID);
     QSqlQueryModel* fetchTransactionList(QString customerID = "");

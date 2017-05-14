@@ -1,6 +1,5 @@
 #include "accountlist.h"
 #include "ui_accountlist.h"
-#include <accountcreate.h>
 #include <QSqlRecord>
 #include <QMessageBox>
 
@@ -21,16 +20,20 @@ void AccountList::init(Customer customer) {
 }
 
 void AccountList::on_Newaccount_clicked() {
+    if(ui->leAccName->text().isEmpty() || ui->leBalance->text().isEmpty() || !Util::isNumber(ui->leBalance->text())) {
+        QMessageBox::information(this, "Account", "You miss name or start balance.");
+        return;
+    }
     Account account;
     account.customerID = customer.id;
     account.name = ui->leAccName->text();
-    if(account.name.isEmpty()) return;
+    account.balance = ui->leBalance->text().toInt();
     bool success = DbManager::getInstance()->addAccount(account);
     if(success) {
         ui->accountList->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
     } else {
         QString action = customer.id.isEmpty() ? "Add" : "Update";
-        QMessageBox::information(this, action + " ", action + " customer failed");
+        QMessageBox::information(this, "Account", action + " account failed");
     }
 }
 

@@ -5,23 +5,34 @@
 #include <QCompleter>
 #include <QModelIndex>
 #include <QMessageBox>
+#include <QAbstractProxyModel>
 
 TransactionDetails::TransactionDetails(QWidget *parent) : QWidget(parent), ui(new Ui::TransactionDetails) {
     ui->setupUi(this);
 
-    QSqlQueryModel *custModel = DbManager::getInstance()->fetchCustomerList();
-    QCompleter *custCompleter = new QCompleter(custModel);
-    custCompleter->setCaseSensitivity(Qt::CaseInsensitive);
-    custCompleter->setCompletionColumn(DB_CUSTOMER_NAME);
-    custCompleter->setFilterMode(Qt::MatchContains);
+    custModel = DbManager::getInstance()->fetchStandardCustomerList();
 
-    ui->leFromCust->setCompleter(custCompleter);
+    ui->cbFromCust->setModel(custModel);
+    ui->cbFromCust->setEditable(true);
+    ui->cbFromCust->setModelColumn(DB_CUSTOMER_NAME);
+    ui->cbFromCust->setCompleter(new QCompleter(custModel));
+    ui->cbFromCust->completer()->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->cbFromCust->completer()->setCompletionColumn(DB_CUSTOMER_NAME);
+    ui->cbFromCust->completer()->setFilterMode(Qt::MatchContains);
+
     ui->cbFromAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
-    ui->leToCust->setCompleter(custCompleter);
+
+    ui->cbToCust->setModel(custModel);
+    ui->cbToCust->setEditable(true);
+    ui->cbToCust->setModelColumn(DB_CUSTOMER_NAME);
+    ui->cbToCust->setCompleter(new QCompleter(custModel));
+    ui->cbToCust->completer()->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->cbToCust->completer()->setCompletionColumn(DB_CUSTOMER_NAME);
+    ui->cbToCust->completer()->setFilterMode(Qt::MatchContains);
+
     ui->cbToAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
+
     ui->date->setDate(QDate::currentDate());
-    ui->leAmount->setInputMask("D000000000");
-    ui->leAmount->setCursorPosition(0);
 }
 
 TransactionDetails::~TransactionDetails() {
@@ -30,9 +41,13 @@ TransactionDetails::~TransactionDetails() {
 
 void TransactionDetails::init(Customer customer) {
     this->customer = customer;
-    ui->leFromCust->setText(customer.name);
+//    QModelIndexList modelIndexList = ui->cbFromCust->model()->match(ui->cbFromCust->model()->index(1,0), Qt::UserRole, QVariant::fromValue(customer.id), Qt::MatchExactly);
+//    if(!modelIndexList.isEmpty()) {
+//        ui->cbFromCust->setCurrentIndex(modelIndexList.first().row());
+//        ui->cbToCust->setCurrentIndex(modelIndexList.first().row());
+//    }
+    ui->cbFromCust->setDisabled(true);
     ui->cbFromAcc->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
-    ui->leToCust->setPlaceholderText("Internal transfer");
     ui->cbToAcc->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
 }
 
@@ -41,9 +56,11 @@ void TransactionDetails::on_buttonSave_clicked() {
 }
 
 void TransactionDetails::save(bool closeWindow) {
-//    if(!ui->leAmount->v)
+    if(ui->cbFromAcc->currentIndex() < 0 || ui->cbToAcc->currentIndex() < 0 || !Util::isNumber(ui->leAmount->text()) || ui->leAmount->text().toInt() <= 0) {
+        QMessageBox::information(this, "Account", "Form is not correctly filled out.");
+        return;
+    }
     Transaction transaction = getRecord();
-//    if()
     bool success = DbManager::getInstance()->addTransaction(transaction);
     if(success) {
         if(closeWindow) {
@@ -51,10 +68,10 @@ void TransactionDetails::save(bool closeWindow) {
             emit showPrev();
         } else {
             if(customer.id.isEmpty()) {
-                ui->leFromCust->clear();
+                ui->cbFromCust->clear();
                 ui->cbFromAcc->clear();
             }
-            ui->leToCust->clear();
+            ui->cbToCust->clear();
             ui->cbToAcc->clear();
             ui->date->setDate(QDate::currentDate());
             ui->leAmount->clear();
@@ -71,24 +88,24 @@ Transaction TransactionDetails::getRecord() {
     Transaction transaction;
     transaction.fromAccountID = fromAccount.id;
     transaction.toAccountID = toAccount.id;
-    transaction.date = ui->date->date();
-//    transaction.amount = 10;
+    transaction.date = ui->date->date() < QDate::currentDate() ? QDate::currentDate() : ui->date->date();
+    transaction.amount = ui->leAmount->text().toInt();
     return transaction;
-}
-
-void TransactionDetails::on_leToCust_editingFinished() {
-    QModelIndex index = ui->leToCust->completer()->currentIndex();
-    if(!index.isValid()) {
-        ui->leToCust->clear();
-        ui->cbToAcc->clear();
-        return;
-    }
-    Customer cust = Util::getCustomer(ui->leToCust->completer()->completionModel(), index.row());
-    ui->cbToAcc->setModel(DbManager::getInstance()->fetchAccountList(cust.id));
-    ui->cbToAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
 }
 
 void TransactionDetails::on_buttonCancel_clicked() {
     close();
     emit showPrev();
+}
+
+void TransactionDetails::on_cbToCust_activated(int index) {
+    Customer cust = Util::getCustomer(ui->cbToCust->model(), index);
+    ui->cbToAcc->setModel(DbManager::getInstance()->fetchAccountList(cust.id));
+    ui->cbToAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
+}
+
+void TransactionDetails::on_cbFromCust_activated(int index) {
+    Customer cust = Util::getCustomer(ui->cbFromCust->model(), index);
+    ui->cbFromAcc->setModel(DbManager::getInstance()->fetchAccountList(cust.id));
+    ui->cbFromAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
 }

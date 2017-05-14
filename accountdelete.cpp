@@ -8,7 +8,7 @@ accountdelete::accountdelete(QWidget *parent) :
     ui->setupUi(this);
     setFocus();
 
-    QSqlQueryModel *custModel = DbManager::getInstance()->fetchCustomerList();
+    QSqlQueryModel *custModel = DbManager::getInstance()->fetchQueryCustomerList();
     QCompleter *custCompleter = new QCompleter(custModel);
     custCompleter->setCaseSensitivity(Qt::CaseInsensitive);
     custCompleter->setCompletionColumn(DB_CUSTOMER_NAME);

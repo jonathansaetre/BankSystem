@@ -30,7 +30,6 @@ SOURCES += main.cpp\
     transactionlist.cpp \
     transactiondetails.cpp \
     dbmanager.cpp \
-    accountcreate.cpp \
     deletecustomer.cpp \
     customerdetails.cpp \
     accountlist.cpp \
@@ -43,7 +42,6 @@ HEADERS  += mainwindow.h \
     transactionlist.h \
     transactiondetails.h \
     dbmanager.h \
-    accountcreate.h \
     deletecustomer.h \
     accountlist.h
 
@@ -53,6 +51,5 @@ FORMS    += mainwindow.ui \
     customerdetails.ui \
     transactionlist.ui \
     transactiondetails.ui \
-    accountcreate.ui \
     deletecustomer.ui \
     accountlist.ui
