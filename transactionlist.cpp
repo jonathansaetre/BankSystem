@@ -5,6 +5,7 @@
 
 TransactionList::TransactionList(QWidget *parent) : QWidget(parent), ui(new Ui::TransactionList) {
     ui->setupUi(this);
+    setWindowTitle("Transactions");
 }
 
 TransactionList::~TransactionList() {
@@ -12,7 +13,7 @@ TransactionList::~TransactionList() {
 }
 
 void TransactionList::init() {
-    ui->listView->setModel(DbManager::getInstance()->fetchTransactionList());
+    ui->transactionList->setModel(DbManager::getInstance()->fetchTransactionList());
     ui->labelCustomer->hide();
     ui->textCustomerName->hide();
 }
@@ -20,7 +21,7 @@ void TransactionList::init() {
 void TransactionList::init(Customer customer) {
     this->customer = customer;
     ui->textCustomerName->setText(customer.name);
-    ui->listView->setModel(DbManager::getInstance()->fetchTransactionList(customer.id));
+    ui->transactionList->setModel(DbManager::getInstance()->fetchTransactionList(customer.id));
 }
 
 void TransactionList::on_buttonNewTransaction_clicked() {
@@ -32,7 +33,7 @@ void TransactionList::on_buttonNewTransaction_clicked() {
 }
 
 void TransactionList::showTransactionList() {
-    if(customer.id.isEmpty()) ui->listView->setModel(DbManager::getInstance()->fetchTransactionList());
+    if(customer.id.isEmpty()) ui->transactionList->setModel(DbManager::getInstance()->fetchTransactionList());
     show();
 }
 

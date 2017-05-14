@@ -30,7 +30,7 @@ public:
     QSqlQueryModel* fetchQueryCustomerList(int state = 1);
     QSqlQuery searchCustomer(QString searchText, int state = 1);
     QSqlQueryModel* fetchAccountList(QString customerID);
-    QSqlQueryModel* fetchTransactionList(QString customerID = "");
+    QStandardItemModel* fetchTransactionList(QString customerID = "");
     bool existsSSN(QString ssn);
 
 private:

@@ -165,29 +165,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QListView" name="listView">
-     <property name="minimumSize">
-      <size>
-       <width>850</width>
-       <height>500</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>850</width>
-       <height>500</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Times New Roman</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color:blue</string>
-     </property>
-    </widget>
+    <widget class="QTreeView" name="transactionList"/>
    </item>
   </layout>
  </widget>

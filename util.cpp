@@ -50,6 +50,10 @@ static const int DB_TRANSACTION_FROMACCOUNTID = 1;
 static const int DB_TRANSACTION_TOACCOUNTID = 2;
 static const int DB_TRANSACTION_AMOUNT = 3;
 static const int DB_TRANSACTION_DATE = 4;
+static const int DB_TRANSACTION_DISPLAY_FROMACCOUNT = 5;
+static const int DB_TRANSACTION_DISPLAY_TOACCOUNT = 6;
+static const int DB_TRANSACTION_DISPLAY_FROMCUSTOMER = 7;
+static const int DB_TRANSACTION_DISPLAY_TOCUSTOMER = 8;
 
 class Util {
 public:

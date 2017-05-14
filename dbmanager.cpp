@@ -124,13 +124,18 @@ bool DbManager::addTransaction(const Transaction r) {
     } else {
         error("addTransaction", query);
     }
-    if(!success) db.rollback();
+    if(!success) {
+        db.rollback();
+    }
+    db.commit();
     return success;
 }
 
 bool DbManager::executeTransfer(const Transaction r) {
     Account fromAccount = fetchAccount(r.fromAccountID);
     fromAccount.balance -= r.amount;
+
+    if(fromAccount.balance < 0) return false;
 
     Account toAccount = fetchAccount(r.toAccountID);
     toAccount.balance += r.amount;
@@ -184,9 +189,9 @@ bool DbManager::updateAccount(const Account r) {
     query.prepare("UPDATE Account SET name=:name, customerid=:customerid, balance=:balance, state=:state WHERE id=:id");
     query.bindValue(":id", r.id);
     query.bindValue(":name", r.name);
-    query.bindValue(":ssn", r.customerID);
-    query.bindValue(":phone", r.balance);
-    query.bindValue(":state", r.state);
+    query.bindValue(":customerid", r.customerID);
+    query.bindValue(":balance", r.balance);
+    query.bindValue(":state", r.state == 0 ? 0 : 1);
     bool success = query.exec();
     if(!success) {
         error("updateAccount", query);
@@ -291,17 +296,15 @@ QStandardItemModel* DbManager::fetchStandardCustomerList(int state) {
             QList<QStandardItem*> list;
             list.append(new QStandardItem(record.value(DB_CUSTOMER_ID).toString()));
             list.append(new QStandardItem(record.value(DB_CUSTOMER_NAME).toString()));
-            list.append(new QStandardItem(query.value(DB_CUSTOMER_SSN).toString()));
-            list.append(new QStandardItem(query.value(DB_CUSTOMER_PHONE).toString()));
-            list.append(new QStandardItem(query.value(DB_CUSTOMER_ADDRESS).toString()));
-            list.append(new QStandardItem(query.value(DB_CUSTOMER_EMAIL).toString()));
-            list.append(new QStandardItem(query.value(DB_CUSTOMER_STATE).toInt()));
+            list.append(new QStandardItem(record.value(DB_CUSTOMER_SSN).toString()));
+            list.append(new QStandardItem(record.value(DB_CUSTOMER_PHONE).toString()));
+            list.append(new QStandardItem(record.value(DB_CUSTOMER_ADDRESS).toString()));
+            list.append(new QStandardItem(record.value(DB_CUSTOMER_EMAIL).toString()));
+            list.append(new QStandardItem(record.value(DB_CUSTOMER_STATE).toInt()));
             model->appendRow(list);
         }
     } else {
-        qDebug() << "fetchCustomerList error: " << query.lastError();
-        qDebug() << query.executedQuery();
-        qDebug() << query.boundValues();
+        error("fetchStandardCustomerList", query);
     }
     return model;
 }
@@ -332,8 +335,8 @@ QSqlQueryModel* DbManager::fetchAccountList(QString customerID) {
     return model;
 }
 
-QSqlQueryModel* DbManager::fetchTransactionList(QString customerID) {
-    QSqlQueryModel *model = new QSqlQueryModel();
+QStandardItemModel* DbManager::fetchTransactionList(QString customerID) {
+    QStandardItemModel *model = new QStandardItemModel();
     QSqlQuery query(db);
     QString s = "SELECT * FROM BankTransaction";
     if(customerID.isEmpty()){
@@ -344,7 +347,31 @@ QSqlQueryModel* DbManager::fetchTransactionList(QString customerID) {
         query.bindValue(":customerid", customerID);
     }
     if(query.exec()) {
-        model->setQuery(query);
+        while(query.next()) {
+            QSqlRecord record = query.record();
+            QList<QStandardItem*> list;
+            Account fromAccount = fetchAccount(record.value(DB_TRANSACTION_FROMACCOUNTID).toString());
+            Account toAccount = fetchAccount(record.value(DB_TRANSACTION_TOACCOUNTID).toString());
+            Customer fromCustomer = fetchCustomer(fromAccount.customerID);
+            Customer toCustomer = fetchCustomer(toAccount.customerID);
+            list.append(new QStandardItem(fromCustomer.name));
+            list.append(new QStandardItem(fromAccount.accountnr));
+            list.append(new QStandardItem(toCustomer.name));
+            list.append(new QStandardItem(toAccount.accountnr));
+//            list.append(new QStandardItem(record.value(DB_TRANSACTION_ID).toString()));
+//            list.append(new QStandardItem(record.value(DB_TRANSACTION_FROMACCOUNTID).toString()));
+//            list.append(new QStandardItem(record.value(DB_TRANSACTION_TOACCOUNTID).toString()));
+            list.append(new QStandardItem(record.value(DB_TRANSACTION_DATE).toString()));
+            list.append(new QStandardItem(record.value(DB_TRANSACTION_AMOUNT).toString()));
+//            list.append(new QStandardItem(record.value(DB_CUSTOMER_STATE).toInt()));
+            model->appendRow(list);
+        }
+        model->setHeaderData(0, Qt::Horizontal, "From customer");
+        model->setHeaderData(1, Qt::Horizontal, "From account");
+        model->setHeaderData(2, Qt::Horizontal, "To customer");
+        model->setHeaderData(3, Qt::Horizontal, "To account");
+        model->setHeaderData(4, Qt::Horizontal, "Date");
+        model->setHeaderData(5, Qt::Horizontal, "Amount");
     } else {
         error("fetchTransactionList", query);
     }
@@ -387,15 +414,3 @@ void DbManager::error(QString s, QSqlQuery query) {
     qDebug() << query.executedQuery();
     qDebug() << query.boundValues();
 }
-
-//QSqlRecord DbManager::selectQuery(const QString queryString) {
-//    QSqlQuery query(db);
-//    query.prepare(queryString);
-//    bool success = true;
-//    if(!query.exec() || !query.first() || !query.isSelect()) {
-//        qDebug() << "getQuery error: " << query.lastError();
-//        qDebug() << query.executedQuery();
-//        return QSqlRecord();
-//    }
-//    return query.record();
-//}

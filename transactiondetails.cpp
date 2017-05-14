@@ -9,6 +9,7 @@
 
 TransactionDetails::TransactionDetails(QWidget *parent) : QWidget(parent), ui(new Ui::TransactionDetails) {
     ui->setupUi(this);
+    setWindowTitle("New transaction");
 
     custModel = DbManager::getInstance()->fetchStandardCustomerList();
 
@@ -41,11 +42,6 @@ TransactionDetails::~TransactionDetails() {
 
 void TransactionDetails::init(Customer customer) {
     this->customer = customer;
-//    QModelIndexList modelIndexList = ui->cbFromCust->model()->match(ui->cbFromCust->model()->index(1,0), Qt::UserRole, QVariant::fromValue(customer.id), Qt::MatchExactly);
-//    if(!modelIndexList.isEmpty()) {
-//        ui->cbFromCust->setCurrentIndex(modelIndexList.first().row());
-//        ui->cbToCust->setCurrentIndex(modelIndexList.first().row());
-//    }
     ui->cbFromCust->setDisabled(true);
     ui->cbFromAcc->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
     ui->cbToAcc->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
@@ -57,7 +53,7 @@ void TransactionDetails::on_buttonSave_clicked() {
 
 void TransactionDetails::save(bool closeWindow) {
     if(ui->cbFromAcc->currentIndex() < 0 || ui->cbToAcc->currentIndex() < 0 || !Util::isNumber(ui->leAmount->text()) || ui->leAmount->text().toInt() <= 0) {
-        QMessageBox::information(this, "Account", "Form is not correctly filled out.");
+        QMessageBox::information(this, "Account", "Missing source account, target account or amount.");
         return;
     }
     Transaction transaction = getRecord();

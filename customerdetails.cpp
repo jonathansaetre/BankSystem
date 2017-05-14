@@ -36,6 +36,11 @@ void CustomerDetails::editCustomer(Customer customer) {
 }
 
 void CustomerDetails::save(bool closeWindow) {
+    if(ui->nameBox->text().isEmpty() || ui->ssnBox->text().isEmpty()) {
+        QMessageBox::information(this, "New customer", "Missing name or ssn.");
+    } else if(ui->addressBox->text().isEmpty() && ui->phoneBox->text().isEmpty() && ui->emailBox->text().isEmpty()) {
+        QMessageBox::information(this, "New customer", "It's required with at least one way of contact: Phone, address or email.");
+    }
     bool success;
     if(customer.id.isEmpty()) {
         Customer cust = DbManager::getInstance()->addCustomer(getRecord());
