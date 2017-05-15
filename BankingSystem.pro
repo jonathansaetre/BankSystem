@@ -26,32 +26,30 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     customerlist.cpp \
-    customerdetails.cpp \
+    accountdelete.cpp \
     transactionlist.cpp \
     transactiondetails.cpp \
     dbmanager.cpp \
     deletecustomer.cpp \
+    customerdetails.cpp \
     accountlist.cpp \
-    util.cpp \
-    accountdelete.cpp
+    util.cpp
 
 HEADERS  += mainwindow.h \
     customerlist.h \
+    accountdelete.h \
     customerdetails.h \
     transactionlist.h \
     transactiondetails.h \
     dbmanager.h \
-    objects.h \
     deletecustomer.h \
-    accountlist.h \
-    accountdelete.h
+    accountlist.h
 
 FORMS    += mainwindow.ui \
     customerlist.ui \
+    accountdelete.ui \
     customerdetails.ui \
     transactionlist.ui \
     transactiondetails.ui \
     deletecustomer.ui \
-    accountlist.ui \
-    accountdelete.ui
-
+    accountlist.ui
