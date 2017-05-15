@@ -210,7 +210,6 @@
     <addaction name="separator"/>
     <addaction name="separator"/>
     <addaction name="actionNew"/>
-    <addaction name="actionDelete"/>
    </widget>
    <widget class="QMenu" name="menuAccount">
     <property name="title">
@@ -260,19 +259,6 @@
    </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
-   </property>
-  </action>
-  <action name="actionDelete">
-   <property name="text">
-    <string>Delete Customer</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>Times New Roman</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
    </property>
   </action>
   <action name="actionDelete_2">

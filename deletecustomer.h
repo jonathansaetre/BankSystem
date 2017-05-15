@@ -17,10 +17,13 @@ public:
     ~Customerdelete();
 
 
+
 private slots:
     void on_closeButton_clicked();
     void on_deleteButton_clicked();
 
+
+    void on_customersnn_editingFinished();
 
 signals:
     void showPrev();
@@ -28,6 +31,8 @@ signals:
 private:
     Ui::Deletecustomer *ui;
     QSqlQueryModel *model;
+    Customer c;
+    Customer getRecord();
 };
 
 #endif // DELETECUSTOMER_H
