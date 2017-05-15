@@ -32,19 +32,25 @@ TransactionDetails::TransactionDetails(QWidget *parent) : QWidget(parent), ui(ne
     ui->cbToCust->completer()->setFilterMode(Qt::MatchContains);
 
     ui->cbToAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
-
-    ui->date->setDate(QDate::currentDate());
 }
 
 TransactionDetails::~TransactionDetails() {
     delete ui;
 }
 
+void TransactionDetails::init() {
+    ui->labelCustomerName->hide();
+    ui->textCustomerName->hide();
+}
+
 void TransactionDetails::init(Customer customer) {
     this->customer = customer;
     ui->cbFromCust->setDisabled(true);
+    ui->textCustomerName->setText(customer.name);
     ui->cbFromAcc->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
     ui->cbToAcc->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
+
+    if(ui->cbFromAcc->model()->rowCount() == 0) QMessageBox::information(this, "Transaction", customer.name + " has none accounts");
 }
 
 void TransactionDetails::on_buttonSave_clicked() {
@@ -69,7 +75,6 @@ void TransactionDetails::save(bool closeWindow) {
             }
             ui->cbToCust->clear();
             ui->cbToAcc->clear();
-            ui->date->setDate(QDate::currentDate());
             ui->leAmount->clear();
         }
     } else {
@@ -84,7 +89,6 @@ Transaction TransactionDetails::getRecord() {
     Transaction transaction;
     transaction.fromAccountID = fromAccount.id;
     transaction.toAccountID = toAccount.id;
-    transaction.date = ui->date->date() < QDate::currentDate() ? QDate::currentDate() : ui->date->date();
     transaction.amount = ui->leAmount->text().toInt();
     return transaction;
 }
@@ -98,10 +102,12 @@ void TransactionDetails::on_cbToCust_activated(int index) {
     Customer cust = Util::getCustomer(ui->cbToCust->model(), index);
     ui->cbToAcc->setModel(DbManager::getInstance()->fetchAccountList(cust.id));
     ui->cbToAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
+    if(ui->cbToAcc->model()->rowCount() == 0) QMessageBox::information(this, "Transaction", cust.name + " has none accounts");
 }
 
 void TransactionDetails::on_cbFromCust_activated(int index) {
     Customer cust = Util::getCustomer(ui->cbFromCust->model(), index);
     ui->cbFromAcc->setModel(DbManager::getInstance()->fetchAccountList(cust.id));
     ui->cbFromAcc->setModelColumn(DB_ACCOUNT_ACCOUNTNR);
+    if(ui->cbFromAcc->model()->rowCount() == 0) QMessageBox::information(this, "Transaction", cust.name + " has none accounts");
 }

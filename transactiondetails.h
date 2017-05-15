@@ -16,6 +16,7 @@ public:
     explicit TransactionDetails(QWidget *parent = 0);
     ~TransactionDetails();
     void init(Customer customer);
+    void init();
 
 private slots:
     void on_buttonSave_clicked();

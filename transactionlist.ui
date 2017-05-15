@@ -92,11 +92,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="textCustomerName">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="textCustomerName"/>
      </item>
     </layout>
    </item>
@@ -165,7 +161,11 @@
     </layout>
    </item>
    <item>
-    <widget class="QTreeView" name="transactionList"/>
+    <widget class="QTreeView" name="transactionList">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

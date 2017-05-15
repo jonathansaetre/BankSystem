@@ -35,7 +35,7 @@ void CustomerDetails::editCustomer(Customer customer) {
     ui->emailBox->setText(customer.email);
 }
 
-void CustomerDetails::save(bool closeWindow) {
+void CustomerDetails::save() {
     if(ui->nameBox->text().isEmpty() || ui->ssnBox->text().isEmpty()) {
         QMessageBox::information(this, "New customer", "Missing name or ssn.");
         return;
@@ -51,6 +51,9 @@ void CustomerDetails::save(bool closeWindow) {
             customer = cust;
             ui->accountButton->show();
             ui->transactionButton->show();
+            setWindowTitle("Edit customer");
+            ui->labelTitle->setText("Edit customer");
+            ui->buttonCancel->setText("Close");
         }
     } else success = DbManager::getInstance()->updateCustomer(getRecord());
     if(!success) {
@@ -76,11 +79,10 @@ void CustomerDetails::on_buttonCancel_clicked() {
 }
 
 void CustomerDetails::on_buttonSave_clicked() {
-    save(true);
+    save();
 }
 
-void CustomerDetails::on_accountButton_clicked()
-{    
+void CustomerDetails::on_accountButton_clicked() {
     hide();
     AccountList *accountlist = new AccountList();
     accountlist->init(customer);

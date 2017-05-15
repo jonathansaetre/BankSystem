@@ -8,7 +8,7 @@ QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = BankSystem
+TARGET = BankingSystem
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -26,28 +26,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     customerlist.cpp \
-    accountdelete.cpp \
     transactionlist.cpp \
     transactiondetails.cpp \
     dbmanager.cpp \
-    deletecustomer.cpp \
     customerdetails.cpp \
     accountlist.cpp \
     util.cpp
 
 HEADERS  += mainwindow.h \
     customerlist.h \
-    accountdelete.h \
     customerdetails.h \
     transactionlist.h \
     transactiondetails.h \
     dbmanager.h \
-    deletecustomer.h \
     accountlist.h
 
 FORMS    += mainwindow.ui \
     customerlist.ui \
-    accountdelete.ui \
     customerdetails.ui \
     transactionlist.ui \
     transactiondetails.ui \

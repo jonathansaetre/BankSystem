@@ -6,6 +6,9 @@
 TransactionList::TransactionList(QWidget *parent) : QWidget(parent), ui(new Ui::TransactionList) {
     ui->setupUi(this);
     setWindowTitle("Transactions");
+    ui->transactionList->hideColumn(DB_TRANSACTION_ID);
+    ui->transactionList->hideColumn(DB_TRANSACTION_FROMACCOUNTID);
+    ui->transactionList->hideColumn(DB_TRANSACTION_TOACCOUNTID);
 }
 
 TransactionList::~TransactionList() {
@@ -27,13 +30,15 @@ void TransactionList::init(Customer customer) {
 void TransactionList::on_buttonNewTransaction_clicked() {
     hide();
     TransactionDetails *transDet = new TransactionDetails();
-    if(!customer.id.isEmpty()) transDet->init(customer);
+    if(customer.id.isEmpty()) transDet->init();
+    else transDet->init(customer);
     QObject::connect(transDet, SIGNAL(showPrev()), SLOT(showTransactionList()));
     transDet->show();
 }
 
 void TransactionList::showTransactionList() {
     if(customer.id.isEmpty()) ui->transactionList->setModel(DbManager::getInstance()->fetchTransactionList());
+    else ui->transactionList->setModel(DbManager::getInstance()->fetchTransactionList(customer.id));
     show();
 }
 

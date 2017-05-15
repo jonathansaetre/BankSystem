@@ -3,10 +3,10 @@
 #include <QSqlRecord>
 #include <QMessageBox>
 
-AccountList::AccountList(QWidget *parent) : QDialog(parent), ui(new Ui::AccountList)
-{
+AccountList::AccountList(QWidget *parent) : QDialog(parent), ui(new Ui::AccountList) {
     ui->setupUi(this);
-
+    ui->accountList->hideColumn(DB_ACCOUNT_ID);
+    ui->accountList->hideColumn(DB_ACCOUNT_STATE);
 }
 
 AccountList::~AccountList() {
@@ -32,8 +32,7 @@ void AccountList::on_Newaccount_clicked() {
     if(success) {
         ui->accountList->setModel(DbManager::getInstance()->fetchAccountList(customer.id));
     } else {
-        QString action = customer.id.isEmpty() ? "Add" : "Update";
-        QMessageBox::information(this, "Account", action + " account failed");
+        QMessageBox::information(this, "Accounts", "New account failed");
     }
 }
 

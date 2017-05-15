@@ -3,9 +3,7 @@
 #include <customerlist.h>
 #include <transactionlist.h>
 #include <customerdetails.h>
-#include <deletecustomer.h>
 #include <transactiondetails.h>
-#include <accountdelete.h>
 #include <dbmanager.h>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -32,38 +30,7 @@ void MainWindow::on_buttonTransactions_clicked() {
     transactionlist->show();
 }
 
-
-void MainWindow::on_actionNew_triggered() {
-    hide();
-    CustomerDetails *customerDet = new CustomerDetails();
-    QObject::connect(customerDet, SIGNAL(showPrev()), SLOT(show()));
-    customerDet->show();
-}
-
-void MainWindow::on_actionDelete_triggered() {
-    hide();
-    Customerdelete *customerDelete = new Customerdelete();
-    QObject::connect(customerDelete, SIGNAL(showPrev()), SLOT(show()));
-    customerDelete->show();
-}
-
 void MainWindow::on_exitButton_clicked() {
     DbManager::close();
     QApplication::quit();
-}
-
-void MainWindow::on_actionDelete_2_triggered()
-{
-    hide();
-    accountdelete *accountdel = new accountdelete();
-    QObject::connect(accountdel, SIGNAL(showPrev()), SLOT(show()));
-    accountdel->show();
-}
-
-void MainWindow::on_actionNew_Transaction_triggered()
-{
-    hide();
-    TransactionDetails *transactiondetail = new TransactionDetails();
-    QObject::connect(transactiondetail, SIGNAL(showPrev()), SLOT(show()));
-    transactiondetail->show();
 }

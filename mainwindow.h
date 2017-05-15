@@ -18,14 +18,7 @@ public:
 private slots:
     void on_buttonCustomers_clicked();
     void on_buttonTransactions_clicked();
-    void on_actionNew_triggered();
-    void on_actionDelete_triggered();
-
     void on_exitButton_clicked();
-
-    void on_actionDelete_2_triggered();
-
-    void on_actionNew_Transaction_triggered();
 
 private:
     Ui::MainWindow *ui;

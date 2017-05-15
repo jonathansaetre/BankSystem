@@ -32,7 +32,7 @@ private:
     Ui::CustomerDetails *ui;
     Customer customer;
     Customer getRecord();
-    void save(bool close);
+    void save();
 };
 
 #endif // CUSTOMERDETAILS_H

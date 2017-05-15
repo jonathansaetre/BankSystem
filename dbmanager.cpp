@@ -8,6 +8,8 @@
 #include <QMessageBox>
 #include <QDate>
 #include <QStandardItemModel>
+#include <stdlib.h>
+#include <QString>
 
 DbManager* DbManager::instance = NULL;
 DbManager* DbManager::getInstance() {
@@ -90,7 +92,7 @@ bool DbManager::addAccount(const Account r) {
     QSqlQuery query(db);
     query.prepare("INSERT INTO Account (customerid, accountnr, name, balance) VALUES (:customerid, :accountnr, :name, :balance)");
     query.bindValue(":customerid", r.customerID);
-    query.bindValue(":accountnr", getAccountnr());
+    query.bindValue(":accountnr", rand() % 100000000 + 100000000);
     query.bindValue(":name", r.name);
     query.bindValue(":balance", r.balance);
     bool success = query.exec();
@@ -100,21 +102,13 @@ bool DbManager::addAccount(const Account r) {
     return success;
 }
 
-QString DbManager::getAccountnr() {
-    int accountnr;
-    do {
-        accountnr = rand() % 100000000 + 100000000;
-    } while(existsAccountNr(QString::number(accountnr)));
-    return QString::number(accountnr);
-}
-
 bool DbManager::addTransaction(const Transaction r) {
     QSqlQuery query(db);
     query.prepare("INSERT INTO BankTransaction (fromaccountid, toaccountid, amount, date) VALUES (:fromaccountid, :toaccountid, :amount, :date)");
     query.bindValue(":fromaccountid", r.fromAccountID);
     query.bindValue(":toaccountid", r.toAccountID);
     query.bindValue(":amount", r.amount);
-    query.bindValue(":date", r.date);
+    query.bindValue(":date", QDate::currentDate());
     db.transaction();
     bool success = query.exec();
     if(success) {
@@ -376,26 +370,6 @@ QStandardItemModel* DbManager::fetchTransactionList(QString customerID) {
         error("fetchTransactionList", query);
     }
     return model;
-}
-
-bool DbManager::existsSSN(QString ssn) {
-    return existsQuery("SELECT ssn FROM Customer where ssn = '" + ssn + "'");
-}
-
-bool DbManager::existsAccountNr(QString accountNr) {
-    return existsQuery("SELECT accountnr FROM Account where accountnr = '" + accountNr + "'");
-}
-
-bool DbManager::existsQuery(const QString queryString) {
-    QSqlQuery query(db);
-    query.prepare(queryString);
-    bool finnes;
-    if(query.exec()) {
-        if(query.isSelect() && query.first()) finnes = true;
-    } else {
-        error("existsQuery", query);
-    }
-    return finnes;
 }
 
 bool DbManager::runQuery(const QString queryString) {

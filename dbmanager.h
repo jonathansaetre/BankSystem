@@ -37,14 +37,11 @@ private:
     DbManager();
     static DbManager *instance;
     QSqlDatabase db;
-    bool existsQuery(QString q);
     bool addCustomerFST(Customer r);
     bool updateCustomerFST(Customer r);
     bool deleteCustomerFST(Customer r);
     bool runQuery(QString queryString);
     bool executeTransfer(Transaction r);
-    bool existsAccountNr(QString accountNr);
-    QString getAccountnr();
     void error(QString s, QSqlQuery query);
 };
 

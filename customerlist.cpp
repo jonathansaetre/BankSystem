@@ -8,6 +8,8 @@ CustomerList::CustomerList(QWidget *parent) : QWidget(parent), ui(new Ui::Custom
     setFocus();
     model = DbManager::getInstance()->fetchQueryCustomerList();
     ui->custList->setModel(model);
+    ui->custList->hideColumn(DB_CUSTOMER_ID);
+    ui->custList->hideColumn(DB_CUSTOMER_STATE);
     QObject::connect(ui->textSearchEdit, SIGNAL(textChanged(QString)), this, SLOT(textSeachEditChanged(QString)));
     QObject::connect(ui->custList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(custListDoubleClicked(QModelIndex)));
 }
